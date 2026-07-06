@@ -113,41 +113,42 @@ var BRANDINGS = [
   { id: "br3", lib: "Branding 3", uid: "2d3d86e7186049ba81cd302a6653df22", logo: "logo-br3.png", accent: "#FF5A00" }
 ];
 
-// Centre exact de la scene (bbox du glb, espace glTF) : sert a calibrer l'espace viewer
-// (Sketchfab recentre le modele -> on mesure le decalage au chargement via getCameraLookAt).
-var CENTRE_GLTF = [5.6, 1.5, -2.54];
+// L'espace camera du viewer Sketchfab = repere D'ORIGINE du modele (z VERTICAL, mesure
+// par sonde CDP 2026-07-06 : cible par defaut = centre bbox en coords Blender). Coordonnees
+// des etapes = coords Blender verbatim ; calibration = filet si Sketchfab change de convention.
+var CENTRE_MODELE = [5.6, 2.54, 1.5];
 var offsetViewer = [0, 0, 0];
 
 var ETAPES = [
   { titre: "Bienvenue devant La French Touch",
-    pos: [5.6, 1.6, 7.0], cible: [5.6, 1.3, -2.0],
+    pos: [5.6, -7.0, 1.6], cible: [5.6, 2.0, 1.3],
     desc: { generique: "Voici la façade du futur restaurant : baie vitrée toute largeur et tables en terrasse. Suivez la visite avec le bouton « Suivant », ou explorez librement à la souris. Vous pouvez changer de branding à tout moment avec les logos en haut de page." } },
   { titre: "L'entrée",
-    pos: [10.0, 1.6, 2.4], cible: [9.2, 1.1, -2.5],
+    pos: [10.0, -2.4, 1.6], cible: [9.2, 2.5, 1.1],
     desc: { generique: "On entre par la porte vitrée côté droit, accueilli par le paillasson au logo. La ligne de banquettes longe la vitrine jusqu'à l'entrée." } },
   { titre: "La salle et ses banquettes",
-    pos: [8.6, 1.65, -3.8], cible: [2.8, 0.75, -0.9],
+    pos: [8.6, 3.8, 1.65], cible: [2.8, 0.9, 0.75],
     desc: { generique: "Les banquettes longent la baie vitrée : on mange face à la salle.",
             br1: "Les banquettes rouge France aux accents dorés longent la baie vitrée : l'esprit franco-latin de ce branding.",
             br2: "Les banquettes orange brûlé et laiton longent la baie vitrée : l'élégance premium de ce branding.",
             br3: "Les banquettes orange feu longent la baie vitrée, dans l'ambiance charbon de ce branding." } },
   { titre: "Le bar",
-    pos: [6.8, 1.95, -0.7], cible: [1.4, 0.85, -3.6],
+    pos: [6.8, 0.7, 1.95], cible: [1.4, 3.6, 0.85],
     desc: { generique: "Le comptoir et son liseré lumineux, avec la machine à café professionnelle : le cœur du service.",
             br1: "Le comptoir en lattes de bois chaleureuses, souligné d'un liseré doré, avec la machine à café professionnelle.",
             br2: "Le comptoir en noyer premium, souligné d'un liseré lumineux, avec la machine à café professionnelle.",
             br3: "Le comptoir en planches de bois vieilli, souligné d'un liseré orange feu, avec la machine à café professionnelle." } },
   { titre: "Les bornes de commande",
-    pos: [6.9, 1.55, -1.6], cible: [7.0, 1.0, -4.0],
+    pos: [6.9, 1.6, 1.55], cible: [7.0, 4.0, 1.0],
     desc: { generique: "Quatre bornes tactiles avec la carte complète : commande autonome et rapide, terminal de paiement intégré." } },
   { titre: "Le mur signature",
-    pos: [6.95, 1.85, -0.6], cible: [6.95, 2.05, -4.45],
+    pos: [6.95, 0.6, 1.85], cible: [6.95, 4.45, 2.05],
     desc: { generique: "Le mur du fond porte l'identité de l'enseigne.",
             br1: "Le mur du fond façon street-art : néons « DU FEU. DU GOÛT. », palmiers dorés et grand logo — l'énergie franco-latine.",
             br2: "Le mur du fond premium : noyer et ardoise, logo rétro-éclairé, « LE GOÛT DE LA BRAISE » et frise laiton.",
             br3: "Le mur en briques rouges : logo du coq rétro-éclairé, slogan néon « LE PLAISIR BIEN BRAISÉ » et hashtag #LaFrenchTouch." } },
   { titre: "À vous d'explorer !",
-    pos: [9.2, 1.95, -0.7], cible: [4.8, 1.15, -4.0],
+    pos: [9.2, 0.7, 1.95], cible: [4.8, 4.0, 1.15],
     desc: { generique: "Vue d'ensemble de la salle. Déplacez-vous librement : clic gauche maintenu pour tourner, molette pour zoomer, clic droit maintenu pour glisser. Et comparez les 3 brandings avec les logos en haut !" } }
 ];
 
@@ -245,7 +246,7 @@ function chargerViewer() {
         // dans SON espace -> offset = cible_defaut - centre connu du glb.
         a.getCameraLookAt(function (err, cam) {
           if (!err && cam && cam.target) {
-            var o = [cam.target[0] - CENTRE_GLTF[0], cam.target[1] - CENTRE_GLTF[1], cam.target[2] - CENTRE_GLTF[2]];
+            var o = [cam.target[0] - CENTRE_MODELE[0], cam.target[1] - CENTRE_MODELE[1], cam.target[2] - CENTRE_MODELE[2]];
             // garde-fou : un offset aberrant (> 100 m) = on n'y touche pas
             if (Math.abs(o[0]) < 100 && Math.abs(o[1]) < 100 && Math.abs(o[2]) < 100) offsetViewer = o;
           }
