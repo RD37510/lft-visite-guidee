@@ -3,27 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La French Touch — Visite guidée du restaurant</title>
+<title>La French Touch — Visite guidée 3D</title>
 <style>
   :root {
-    --charbon: #0F1419;
-    --orange: #FF5A00;
-    --dore: #FFA01A;
-    --creme: #FFFFFF;
-    --gris: #E6E6E6;
+    --charbon: #0F1419; --panneau: #161d24; --carte: #1b232b;
+    --orange: #FF5A00; --gris: #E6E6E6;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { height: 100%; font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; background: var(--charbon); color: var(--creme); }
+  html, body { height: 100%; font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; background: var(--charbon); color: #fff; }
   .layout { display: flex; flex-direction: column; height: 100%; }
+
   header {
-    display: flex; align-items: center; gap: 14px;
-    padding: 12px 20px; background: var(--charbon); border-bottom: 2px solid var(--orange);
+    display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+    padding: 10px 18px; background: var(--charbon); border-bottom: 2px solid var(--orange);
   }
-  header .flamme { font-size: 26px; }
-  header h1 { font-size: 17px; letter-spacing: 1px; text-transform: uppercase; }
+  header h1 { font-size: 15px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
   header h1 span { color: var(--orange); }
-  header .sous { margin-left: auto; font-size: 12px; color: var(--gris); opacity: .8; }
-  .viewer { flex: 1; position: relative; background: #000; }
+
+  .brandings { display: flex; gap: 12px; margin-left: auto; align-items: stretch; }
+  .logo-btn {
+    background: var(--carte); border: 2px solid transparent; border-radius: 10px;
+    padding: 6px 14px; cursor: pointer; display: flex; flex-direction: column;
+    align-items: center; gap: 3px; transition: border-color .2s, transform .1s;
+  }
+  .logo-btn:active { transform: scale(.97); }
+  .logo-btn img { height: 52px; width: auto; max-width: 120px; object-fit: contain;
+    filter: grayscale(1) brightness(.75); opacity: .5; transition: filter .25s, opacity .25s; }
+  .logo-btn .lib { font-size: 10px; letter-spacing: .5px; color: var(--gris); opacity: .5; text-transform: uppercase; }
+  .logo-btn.actif { border-color: var(--accent, var(--orange)); }
+  .logo-btn.actif img { filter: none; opacity: 1; }
+  .logo-btn.actif .lib { opacity: 1; color: var(--accent, var(--orange)); font-weight: 700; }
+
+  .viewer { flex: 1; position: relative; background: #000; min-height: 240px; }
   .viewer iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
   #chargement {
     position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px;
@@ -33,50 +44,50 @@
   #chargement.cache { opacity: 0; pointer-events: none; }
   .brasier { font-size: 42px; animation: pulse 1.2s infinite alternate; }
   @keyframes pulse { from { transform: scale(1); opacity: .7; } to { transform: scale(1.15); opacity: 1; } }
+
   .panneau {
-    background: var(--charbon); border-top: 2px solid var(--orange);
-    padding: 14px 20px 18px; display: flex; flex-direction: column; gap: 10px;
+    background: var(--panneau); border-top: 2px solid var(--orange);
+    padding: 12px 18px 16px; display: flex; flex-direction: column; gap: 8px;
   }
-  .etape-ligne { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .etape-ligne { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .etape-num {
     background: var(--orange); color: #fff; font-weight: 800; border-radius: 999px;
-    min-width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center;
-    font-size: 15px; align-self: center;
+    min-width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; font-size: 15px;
   }
-  .etape-titre { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
-  .etape-desc { font-size: 14px; line-height: 1.5; color: var(--gris); max-width: 900px; }
-  .controles { display: flex; align-items: center; gap: 14px; margin-top: 4px; flex-wrap: wrap; }
+  .etape-titre { font-size: 17px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+  .etape-desc { font-size: 13.5px; line-height: 1.5; color: var(--gris); max-width: 950px; }
+  .controles { display: flex; align-items: center; gap: 12px; margin-top: 2px; flex-wrap: wrap; }
   button {
     font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
-    border: 0; border-radius: 8px; padding: 10px 22px; transition: transform .1s, opacity .2s;
+    border: 0; border-radius: 8px; padding: 9px 20px; transition: transform .1s, opacity .2s;
   }
   button:active { transform: scale(.97); }
   #btn-suivant { background: var(--orange); color: #fff; }
-  #btn-precedent { background: transparent; color: var(--gris); border: 1px solid var(--gris); }
+  #btn-precedent { background: transparent; color: var(--gris); border: 1px solid #4a535c; }
   button:disabled { opacity: .35; cursor: default; }
   .points { display: flex; gap: 8px; margin-left: auto; }
-  .point {
-    width: 12px; height: 12px; border-radius: 50%; background: #3a4149; cursor: pointer;
-    border: 0; padding: 0; transition: background .2s, transform .2s;
-  }
+  .point { width: 12px; height: 12px; border-radius: 50%; background: #3a4149; cursor: pointer; border: 0; padding: 0; transition: background .2s, transform .2s; }
   .point.actif { background: var(--orange); transform: scale(1.3); }
-  @media (max-width: 640px) {
-    .etape-titre { font-size: 15px; }
-    .etape-desc { font-size: 13px; }
-    header .sous { display: none; }
+
+  @media (max-width: 700px) {
+    header { gap: 10px; }
+    header h1 { font-size: 13px; }
+    .brandings { margin-left: 0; width: 100%; justify-content: center; }
+    .logo-btn img { height: 40px; }
+    .etape-titre { font-size: 14px; }
+    .etape-desc { font-size: 12.5px; }
   }
 </style>
 </head>
 <body>
 <div class="layout">
   <header>
-    <span class="flamme">🔥</span>
     <h1>La French Touch <span>— Visite guidée</span></h1>
-    <span class="sous">Cliquez sur « Suivant » pour découvrir le futur restaurant en 7 étapes</span>
+    <nav class="brandings" id="brandings" aria-label="Choix du branding"></nav>
   </header>
-  <div class="viewer">
-    <iframe id="api-frame" title="La French Touch Resto BR3" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share></iframe>
-    <div id="chargement"><span class="brasier">🔥</span><span>Chargement du restaurant 3D…</span></div>
+  <div class="viewer" id="viewer-box">
+    <iframe id="api-frame" title="La French Touch — maquette 3D" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
+    <div id="chargement"><span class="brasier">🔥</span><span id="chargement-txt">Chargement du restaurant 3D…</span></div>
   </div>
   <div class="panneau">
     <div class="etape-ligne">
@@ -94,36 +105,51 @@
 
 <script src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"></script>
 <script>
-// Visite guidée : pilote la caméra du viewer Sketchfab (modèle BR3 v4).
+// Visite guidée multi-brandings : 3 maquettes Sketchfab (même géométrie), caméra pilotée.
 // Coordonnées = espace glTF du modèle (x, hauteur, -profondeur Blender).
-var UID = "2d3d86e7186049ba81cd302a6653df22";
+var BRANDINGS = [
+  { id: "br1", lib: "Branding 1", uid: "3c35bf5e5b2d495a9dba0edcc133c53d", logo: "logo-br1.png", accent: "#E63946" },
+  { id: "br2", lib: "Branding 2", uid: "ed5c28783ebc4c8c83ddba33c388a8c5", logo: "logo-br2.png", accent: "#D78639" },
+  { id: "br3", lib: "Branding 3", uid: "2d3d86e7186049ba81cd302a6653df22", logo: "logo-br3.png", accent: "#FF5A00" }
+];
 
 var ETAPES = [
   { titre: "Bienvenue devant La French Touch",
-    desc: "Voici la façade du futur restaurant : baie vitrée toute largeur, colonne signature orange et deux tables en terrasse. La visite vous guide pas à pas — laissez-vous porter, ou explorez à la souris à tout moment.",
-    pos: [5.5, 3.2, 9.0], cible: [5.5, 0.7, -2.2] },
+    pos: [5.5, 3.2, 9.0], cible: [5.5, 0.7, -2.2],
+    desc: { generique: "Voici la façade du futur restaurant : baie vitrée toute largeur et tables en terrasse. Suivez la visite avec le bouton « Suivant », ou explorez librement à la souris. Vous pouvez changer de branding à tout moment avec les logos en haut de page." } },
   { titre: "L'entrée",
-    desc: "On entre par la porte vitrée côté droit, accueilli par le paillasson au logo du coq. À gauche, la ligne de banquettes longe la vitrine.",
-    pos: [10.0, 1.8, 4.5], cible: [9.0, 1.2, -1.5] },
+    pos: [10.0, 1.8, 4.5], cible: [9.0, 1.2, -1.5],
+    desc: { generique: "On entre par la porte vitrée côté droit, accueilli par le paillasson au logo. La ligne de banquettes longe la vitrine jusqu'à l'entrée." } },
   { titre: "La salle et ses banquettes",
-    desc: "Les banquettes orange signature longent la baie vitrée : on mange face à la salle, dans l'ambiance charbon et bois de la nouvelle identité.",
-    pos: [9.0, 2.05, -3.5], cible: [2.5, 0.4, -0.65] },
+    pos: [9.0, 2.05, -3.5], cible: [2.5, 0.4, -0.65],
+    desc: { generique: "Les banquettes longent la baie vitrée : on mange face à la salle.",
+            br1: "Les banquettes rouge France aux accents dorés longent la baie vitrée : l'esprit franco-latin de ce branding.",
+            br2: "Les banquettes orange brûlé et laiton longent la baie vitrée : l'élégance premium de ce branding.",
+            br3: "Les banquettes orange feu longent la baie vitrée, dans l'ambiance charbon de ce branding." } },
   { titre: "Le bar",
-    desc: "Le comptoir en planches de bois vieilli, souligné d'un liseré orange lumineux, avec la machine à café professionnelle. C'est le cœur du service.",
-    pos: [6.8, 1.95, -0.7], cible: [1.4, 0.85, -3.6] },
+    pos: [6.8, 1.95, -0.7], cible: [1.4, 0.85, -3.6],
+    desc: { generique: "Le comptoir et son liseré lumineux, avec la machine à café professionnelle : le cœur du service.",
+            br1: "Le comptoir en lattes de bois chaleureuses, souligné d'un liseré doré, avec la machine à café professionnelle.",
+            br2: "Le comptoir en noyer premium, souligné d'un liseré lumineux, avec la machine à café professionnelle.",
+            br3: "Le comptoir en planches de bois vieilli, souligné d'un liseré orange feu, avec la machine à café professionnelle." } },
   { titre: "Les bornes de commande",
-    desc: "Quatre bornes tactiles avec la carte complète : commande autonome et rapide, terminal de paiement intégré.",
-    pos: [6.9, 1.55, -1.6], cible: [7.0, 1.0, -4.0] },
+    pos: [6.9, 1.55, -1.6], cible: [7.0, 1.0, -4.0],
+    desc: { generique: "Quatre bornes tactiles avec la carte complète : commande autonome et rapide, terminal de paiement intégré." } },
   { titre: "Le mur signature",
-    desc: "Le mur en briques rouges porte l'identité : logo du coq rétro-éclairé, slogan néon « LE PLAISIR BIEN BRAISÉ » et hashtag #LaFrenchTouch.",
-    pos: [6.95, 1.85, -0.6], cible: [6.95, 2.05, -4.45] },
+    pos: [6.95, 1.85, -0.6], cible: [6.95, 2.05, -4.45],
+    desc: { generique: "Le mur du fond porte l'identité de l'enseigne.",
+            br1: "Le mur du fond façon street-art : néons « DU FEU. DU GOÛT. », palmiers dorés et grand logo — l'énergie franco-latine.",
+            br2: "Le mur du fond premium : noyer et ardoise, logo rétro-éclairé, « LE GOÛT DE LA BRAISE » et frise laiton.",
+            br3: "Le mur en briques rouges : logo du coq rétro-éclairé, slogan néon « LE PLAISIR BIEN BRAISÉ » et hashtag #LaFrenchTouch." } },
   { titre: "À vous d'explorer !",
-    desc: "Vue d'ensemble de la salle. Vous pouvez maintenant vous déplacer librement : clic gauche maintenu pour tourner, molette pour zoomer, clic droit maintenu pour vous déplacer. Bonne visite !",
-    pos: [9.2, 1.95, -0.7], cible: [4.8, 1.15, -4.0] }
+    pos: [9.2, 1.95, -0.7], cible: [4.8, 1.15, -4.0],
+    desc: { generique: "Vue d'ensemble de la salle. Déplacez-vous librement : clic gauche maintenu pour tourner, molette pour zoomer, clic droit maintenu pour glisser. Et comparez les 3 brandings avec les logos en haut !" } }
 ];
 
 var api = null;
 var etapeActive = 0;
+var brandingActif = 2;   // demarre sur Branding 3 (le plus recent)
+var generation = 0;      // invalide les callbacks d'un viewer remplace
 
 var $num = document.getElementById("etape-num");
 var $titre = document.getElementById("etape-titre");
@@ -131,6 +157,16 @@ var $desc = document.getElementById("etape-desc");
 var $prec = document.getElementById("btn-precedent");
 var $suiv = document.getElementById("btn-suivant");
 var $points = document.getElementById("points");
+var $brandings = document.getElementById("brandings");
+var $charge = document.getElementById("chargement");
+
+BRANDINGS.forEach(function (b, i) {
+  var btn = document.createElement("button");
+  btn.className = "logo-btn"; btn.style.setProperty("--accent", b.accent);
+  btn.innerHTML = '<img src="' + b.logo + '" alt="' + b.lib + '"><span class="lib">' + b.lib + "</span>";
+  btn.addEventListener("click", function () { choisirBranding(i); });
+  $brandings.appendChild(btn);
+});
 
 ETAPES.forEach(function (_, i) {
   var p = document.createElement("button");
@@ -141,13 +177,17 @@ ETAPES.forEach(function (_, i) {
 
 function majPanneau() {
   var e = ETAPES[etapeActive];
+  var b = BRANDINGS[brandingActif];
   $num.textContent = etapeActive + 1;
   $titre.textContent = e.titre;
-  $desc.textContent = e.desc;
+  $desc.textContent = e.desc[b.id] || e.desc.generique;
   $prec.disabled = etapeActive === 0;
   $suiv.textContent = etapeActive === ETAPES.length - 1 ? "Revoir ↺" : "Suivant →";
   Array.prototype.forEach.call($points.children, function (p, i) {
     p.classList.toggle("actif", i === etapeActive);
+  });
+  Array.prototype.forEach.call($brandings.children, function (btn, i) {
+    btn.classList.toggle("actif", i === brandingActif);
   });
 }
 
@@ -160,27 +200,52 @@ function allerEtape(i) {
   }
 }
 
-$prec.addEventListener("click", function () { allerEtape(etapeActive - 1); });
-$suiv.addEventListener("click", function () { allerEtape(etapeActive + 1); });
+function choisirBranding(i) {
+  if (i === brandingActif) return;
+  brandingActif = i;
+  majPanneau();
+  chargerViewer();
+}
 
-var client = new Sketchfab("1.12.1", document.getElementById("api-frame"));
-client.init(UID, {
-  autostart: 1, preload: 1,
-  ui_infos: 0, ui_controls: 0, ui_watermark: 0, ui_help: 0, ui_settings: 0,
-  ui_inspector: 0, ui_vr: 0, ui_ar: 0, ui_annotations: 0, ui_fullscreen: 1,
-  success: function (a) {
-    api = a;
-    api.start();
-    api.addEventListener("viewerready", function () {
-      document.getElementById("chargement").classList.add("cache");
-      allerEtape(0);
-    });
-  },
-  error: function () {
-    document.getElementById("chargement").innerHTML =
-      "<span>⚠️ Impossible de charger le modèle 3D. Vérifiez votre connexion internet puis rechargez la page.</span>";
-  }
-});
+function chargerViewer() {
+  generation += 1;
+  var gen = generation;
+  api = null;
+  var b = BRANDINGS[brandingActif];
+  $charge.classList.remove("cache");
+  document.getElementById("chargement-txt").textContent = "Chargement — " + b.lib + "…";
+  // iframe neuve a chaque switch (le client Sketchfab ne se re-init pas proprement sinon)
+  var vieux = document.getElementById("api-frame");
+  var neuf = document.createElement("iframe");
+  neuf.id = "api-frame"; neuf.title = "La French Touch — maquette 3D";
+  neuf.setAttribute("allow", "autoplay; fullscreen; xr-spatial-tracking");
+  vieux.parentNode.replaceChild(neuf, vieux);
+
+  var client = new Sketchfab("1.12.1", neuf);
+  client.init(b.uid, {
+    autostart: 1, preload: 1,
+    ui_infos: 0, ui_controls: 0, ui_watermark: 0, ui_help: 0, ui_settings: 0,
+    ui_inspector: 0, ui_vr: 0, ui_ar: 0, ui_annotations: 0, ui_fullscreen: 1,
+    success: function (a) {
+      if (gen !== generation) return;
+      a.start();
+      a.addEventListener("viewerready", function () {
+        if (gen !== generation) return;
+        api = a;
+        $charge.classList.add("cache");
+        var e = ETAPES[etapeActive];
+        api.setCameraLookAt(e.pos, e.cible, 0.1);
+      });
+    },
+    error: function () {
+      if (gen !== generation) return;
+      $charge.innerHTML = "<span>⚠️ Impossible de charger la maquette 3D. Vérifiez votre connexion internet puis rechargez la page.</span>";
+    }
+  });
+}
+
+majPanneau();
+chargerViewer();
 </script>
 </body>
 </html>
