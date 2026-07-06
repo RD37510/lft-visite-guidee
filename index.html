@@ -210,6 +210,9 @@ function allerEtape(i, duree) {
   }
 }
 
+$prec.addEventListener("click", function () { allerEtape(etapeActive - 1); });
+$suiv.addEventListener("click", function () { allerEtape(etapeActive + 1); });
+
 function choisirBranding(i) {
   if (i === brandingActif) return;
   brandingActif = i;
