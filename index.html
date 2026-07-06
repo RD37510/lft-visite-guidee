@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La French Touch — Visite guidée du restaurant</title>
+<style>
+  :root {
+    --charbon: #0F1419;
+    --orange: #FF5A00;
+    --dore: #FFA01A;
+    --creme: #FFFFFF;
+    --gris: #E6E6E6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; background: var(--charbon); color: var(--creme); }
+  .layout { display: flex; flex-direction: column; height: 100%; }
+  header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 20px; background: var(--charbon); border-bottom: 2px solid var(--orange);
+  }
+  header .flamme { font-size: 26px; }
+  header h1 { font-size: 17px; letter-spacing: 1px; text-transform: uppercase; }
+  header h1 span { color: var(--orange); }
+  header .sous { margin-left: auto; font-size: 12px; color: var(--gris); opacity: .8; }
+  .viewer { flex: 1; position: relative; background: #000; }
+  .viewer iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  #chargement {
+    position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px;
+    align-items: center; justify-content: center; background: var(--charbon); z-index: 5;
+    transition: opacity .5s; font-size: 15px; color: var(--gris);
+  }
+  #chargement.cache { opacity: 0; pointer-events: none; }
+  .brasier { font-size: 42px; animation: pulse 1.2s infinite alternate; }
+  @keyframes pulse { from { transform: scale(1); opacity: .7; } to { transform: scale(1.15); opacity: 1; } }
+  .panneau {
+    background: var(--charbon); border-top: 2px solid var(--orange);
+    padding: 14px 20px 18px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .etape-ligne { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .etape-num {
+    background: var(--orange); color: #fff; font-weight: 800; border-radius: 999px;
+    min-width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center;
+    font-size: 15px; align-self: center;
+  }
+  .etape-titre { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+  .etape-desc { font-size: 14px; line-height: 1.5; color: var(--gris); max-width: 900px; }
+  .controles { display: flex; align-items: center; gap: 14px; margin-top: 4px; flex-wrap: wrap; }
+  button {
+    font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+    border: 0; border-radius: 8px; padding: 10px 22px; transition: transform .1s, opacity .2s;
+  }
+  button:active { transform: scale(.97); }
+  #btn-suivant { background: var(--orange); color: #fff; }
+  #btn-precedent { background: transparent; color: var(--gris); border: 1px solid var(--gris); }
+  button:disabled { opacity: .35; cursor: default; }
+  .points { display: flex; gap: 8px; margin-left: auto; }
+  .point {
+    width: 12px; height: 12px; border-radius: 50%; background: #3a4149; cursor: pointer;
+    border: 0; padding: 0; transition: background .2s, transform .2s;
+  }
+  .point.actif { background: var(--orange); transform: scale(1.3); }
+  @media (max-width: 640px) {
+    .etape-titre { font-size: 15px; }
+    .etape-desc { font-size: 13px; }
+    header .sous { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <header>
+    <span class="flamme">🔥</span>
+    <h1>La French Touch <span>— Visite guidée</span></h1>
+    <span class="sous">Cliquez sur « Suivant » pour découvrir le futur restaurant en 7 étapes</span>
+  </header>
+  <div class="viewer">
+    <iframe id="api-frame" title="La French Touch Resto BR3" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share></iframe>
+    <div id="chargement"><span class="brasier">🔥</span><span>Chargement du restaurant 3D…</span></div>
+  </div>
+  <div class="panneau">
+    <div class="etape-ligne">
+      <span class="etape-num" id="etape-num">1</span>
+      <span class="etape-titre" id="etape-titre"></span>
+    </div>
+    <p class="etape-desc" id="etape-desc"></p>
+    <div class="controles">
+      <button id="btn-precedent">← Précédent</button>
+      <button id="btn-suivant">Suivant →</button>
+      <div class="points" id="points"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"></script>
+<script>
+// Visite guidée : pilote la caméra du viewer Sketchfab (modèle BR3 v4).
+// Coordonnées = espace glTF du modèle (x, hauteur, -profondeur Blender).
+var UID = "2d3d86e7186049ba81cd302a6653df22";
+
+var ETAPES = [
+  { titre: "Bienvenue devant La French Touch",
+    desc: "Voici la façade du futur restaurant : baie vitrée toute largeur, colonne signature orange et deux tables en terrasse. La visite vous guide pas à pas — laissez-vous porter, ou explorez à la souris à tout moment.",
+    pos: [5.5, 3.2, 9.0], cible: [5.5, 0.7, -2.2] },
+  { titre: "L'entrée",
+    desc: "On entre par la porte vitrée côté droit, accueilli par le paillasson au logo du coq. À gauche, la ligne de banquettes longe la vitrine.",
+    pos: [10.0, 1.8, 4.5], cible: [9.0, 1.2, -1.5] },
+  { titre: "La salle et ses banquettes",
+    desc: "Les banquettes orange signature longent la baie vitrée : on mange face à la salle, dans l'ambiance charbon et bois de la nouvelle identité.",
+    pos: [9.0, 2.05, -3.5], cible: [2.5, 0.4, -0.65] },
+  { titre: "Le bar",
+    desc: "Le comptoir en planches de bois vieilli, souligné d'un liseré orange lumineux, avec la machine à café professionnelle. C'est le cœur du service.",
+    pos: [6.8, 1.95, -0.7], cible: [1.4, 0.85, -3.6] },
+  { titre: "Les bornes de commande",
+    desc: "Quatre bornes tactiles avec la carte complète : commande autonome et rapide, terminal de paiement intégré.",
+    pos: [6.9, 1.55, -1.6], cible: [7.0, 1.0, -4.0] },
+  { titre: "Le mur signature",
+    desc: "Le mur en briques rouges porte l'identité : logo du coq rétro-éclairé, slogan néon « LE PLAISIR BIEN BRAISÉ » et hashtag #LaFrenchTouch.",
+    pos: [6.95, 1.85, -0.6], cible: [6.95, 2.05, -4.45] },
+  { titre: "À vous d'explorer !",
+    desc: "Vue d'ensemble de la salle. Vous pouvez maintenant vous déplacer librement : clic gauche maintenu pour tourner, molette pour zoomer, clic droit maintenu pour vous déplacer. Bonne visite !",
+    pos: [9.2, 1.95, -0.7], cible: [4.8, 1.15, -4.0] }
+];
+
+var api = null;
+var etapeActive = 0;
+
+var $num = document.getElementById("etape-num");
+var $titre = document.getElementById("etape-titre");
+var $desc = document.getElementById("etape-desc");
+var $prec = document.getElementById("btn-precedent");
+var $suiv = document.getElementById("btn-suivant");
+var $points = document.getElementById("points");
+
+ETAPES.forEach(function (_, i) {
+  var p = document.createElement("button");
+  p.className = "point"; p.title = "Étape " + (i + 1);
+  p.addEventListener("click", function () { allerEtape(i); });
+  $points.appendChild(p);
+});
+
+function majPanneau() {
+  var e = ETAPES[etapeActive];
+  $num.textContent = etapeActive + 1;
+  $titre.textContent = e.titre;
+  $desc.textContent = e.desc;
+  $prec.disabled = etapeActive === 0;
+  $suiv.textContent = etapeActive === ETAPES.length - 1 ? "Revoir ↺" : "Suivant →";
+  Array.prototype.forEach.call($points.children, function (p, i) {
+    p.classList.toggle("actif", i === etapeActive);
+  });
+}
+
+function allerEtape(i) {
+  etapeActive = (i + ETAPES.length) % ETAPES.length;
+  majPanneau();
+  if (api) {
+    var e = ETAPES[etapeActive];
+    api.setCameraLookAt(e.pos, e.cible, 2.2);
+  }
+}
+
+$prec.addEventListener("click", function () { allerEtape(etapeActive - 1); });
+$suiv.addEventListener("click", function () { allerEtape(etapeActive + 1); });
+
+var client = new Sketchfab("1.12.1", document.getElementById("api-frame"));
+client.init(UID, {
+  autostart: 1, preload: 1,
+  ui_infos: 0, ui_controls: 0, ui_watermark: 0, ui_help: 0, ui_settings: 0,
+  ui_inspector: 0, ui_vr: 0, ui_ar: 0, ui_annotations: 0, ui_fullscreen: 1,
+  success: function (a) {
+    api = a;
+    api.start();
+    api.addEventListener("viewerready", function () {
+      document.getElementById("chargement").classList.add("cache");
+      allerEtape(0);
+    });
+  },
+  error: function () {
+    document.getElementById("chargement").innerHTML =
+      "<span>⚠️ Impossible de charger le modèle 3D. Vérifiez votre connexion internet puis rechargez la page.</span>";
+  }
+});
+</script>
+</body>
+</html>
