@@ -113,15 +113,20 @@ var BRANDINGS = [
   { id: "br3", lib: "Branding 3", uid: "2d3d86e7186049ba81cd302a6653df22", logo: "logo-br3.png", accent: "#FF5A00" }
 ];
 
+// Centre exact de la scene (bbox du glb, espace glTF) : sert a calibrer l'espace viewer
+// (Sketchfab recentre le modele -> on mesure le decalage au chargement via getCameraLookAt).
+var CENTRE_GLTF = [5.6, 1.5, -2.54];
+var offsetViewer = [0, 0, 0];
+
 var ETAPES = [
   { titre: "Bienvenue devant La French Touch",
-    pos: [5.5, 3.2, 9.0], cible: [5.5, 0.7, -2.2],
+    pos: [5.6, 1.6, 7.0], cible: [5.6, 1.3, -2.0],
     desc: { generique: "Voici la façade du futur restaurant : baie vitrée toute largeur et tables en terrasse. Suivez la visite avec le bouton « Suivant », ou explorez librement à la souris. Vous pouvez changer de branding à tout moment avec les logos en haut de page." } },
   { titre: "L'entrée",
-    pos: [10.0, 1.8, 4.5], cible: [9.0, 1.2, -1.5],
+    pos: [10.0, 1.6, 2.4], cible: [9.2, 1.1, -2.5],
     desc: { generique: "On entre par la porte vitrée côté droit, accueilli par le paillasson au logo. La ligne de banquettes longe la vitrine jusqu'à l'entrée." } },
   { titre: "La salle et ses banquettes",
-    pos: [9.0, 2.05, -3.5], cible: [2.5, 0.4, -0.65],
+    pos: [8.6, 1.65, -3.8], cible: [2.8, 0.75, -0.9],
     desc: { generique: "Les banquettes longent la baie vitrée : on mange face à la salle.",
             br1: "Les banquettes rouge France aux accents dorés longent la baie vitrée : l'esprit franco-latin de ce branding.",
             br2: "Les banquettes orange brûlé et laiton longent la baie vitrée : l'élégance premium de ce branding.",
@@ -191,12 +196,16 @@ function majPanneau() {
   });
 }
 
-function allerEtape(i) {
+function decale(p) {
+  return [p[0] + offsetViewer[0], p[1] + offsetViewer[1], p[2] + offsetViewer[2]];
+}
+
+function allerEtape(i, duree) {
   etapeActive = (i + ETAPES.length) % ETAPES.length;
   majPanneau();
   if (api) {
     var e = ETAPES[etapeActive];
-    api.setCameraLookAt(e.pos, e.cible, 2.2);
+    api.setCameraLookAt(decale(e.pos), decale(e.cible), duree === undefined ? 2.2 : duree);
   }
 }
 
@@ -232,9 +241,17 @@ function chargerViewer() {
       a.addEventListener("viewerready", function () {
         if (gen !== generation) return;
         api = a;
-        $charge.classList.add("cache");
-        var e = ETAPES[etapeActive];
-        api.setCameraLookAt(e.pos, e.cible, 0.1);
+        // CALIBRATION : la camera par defaut de Sketchfab vise le centre du modele
+        // dans SON espace -> offset = cible_defaut - centre connu du glb.
+        a.getCameraLookAt(function (err, cam) {
+          if (!err && cam && cam.target) {
+            var o = [cam.target[0] - CENTRE_GLTF[0], cam.target[1] - CENTRE_GLTF[1], cam.target[2] - CENTRE_GLTF[2]];
+            // garde-fou : un offset aberrant (> 100 m) = on n'y touche pas
+            if (Math.abs(o[0]) < 100 && Math.abs(o[1]) < 100 && Math.abs(o[2]) < 100) offsetViewer = o;
+          }
+          $charge.classList.add("cache");
+          allerEtape(etapeActive, 0.1);
+        });
       });
     },
     error: function () {
