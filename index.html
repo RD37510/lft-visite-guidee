@@ -36,18 +36,18 @@
     border-bottom: 2px solid var(--accent); transition: border-color .4s;
   }
   .marque { display: flex; align-items: center; gap: 10px; min-width: 0; }
-  .marque img { height: 46px; width: auto; max-width: 130px; object-fit: contain; transition: opacity .3s; }
+  .marque img { height: 56px; width: auto; max-width: 156px; object-fit: contain; transition: opacity .3s; }
   .marque span { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gris2); white-space: nowrap; }
   .brandings { display: flex; gap: 8px; margin-left: auto; }
   .logo-btn {
     background: var(--carte); border: 2px solid transparent; border-radius: 8px;
-    padding: 3px 10px; cursor: pointer; display: flex; flex-direction: column;
+    padding: 5px 14px; cursor: pointer; display: flex; flex-direction: column;
     align-items: center; gap: 2px; transition: border-color .2s, transform .1s;
   }
   .logo-btn:active { transform: scale(.97); }
-  .logo-btn img { height: 30px; width: auto; max-width: 84px; object-fit: contain;
+  .logo-btn img { height: 44px; width: auto; max-width: 122px; object-fit: contain;
     filter: grayscale(1) brightness(.75); opacity: .5; transition: filter .25s, opacity .25s; }
-  .logo-btn .lib { font-size: 8.5px; letter-spacing: .5px; color: var(--gris); opacity: .5; text-transform: uppercase; }
+  .logo-btn .lib { font-size: 10px; letter-spacing: .5px; color: var(--gris); opacity: .5; text-transform: uppercase; }
   .logo-btn.actif { border-color: var(--laccent, var(--accent)); }
   .logo-btn.actif img { filter: none; opacity: 1; }
   .logo-btn.actif .lib { opacity: 1; color: var(--laccent, var(--accent)); font-weight: 700; }
@@ -64,7 +64,7 @@
   #volet.sort { transition: transform .45s cubic-bezier(.7,0,.3,1); transform: translateX(102%); }
 
   /* ---------- héro : visite 3D ---------- */
-  #hero { height: 100vh; display: flex; flex-direction: column; padding-top: 60px; }
+  #hero { height: 100vh; display: flex; flex-direction: column; padding-top: 92px; }
   .slogan-barre { text-align: center; padding: 12px 16px 10px; }
   .slogan-barre .slogan {
     font-size: clamp(22px, 3.6vw, 40px); font-weight: 900; letter-spacing: 2px;
@@ -118,6 +118,8 @@
   [data-reveal].visible { opacity: 1; transform: none; }
   .parallax { overflow: hidden; border-radius: 14px; }
   .parallax img { transform: translateY(var(--py, 0px)) scale(1.12); transition: transform .1s linear; will-change: transform; }
+  .charte-cadre { border-radius: 14px; overflow: hidden; box-shadow: 0 18px 50px rgba(0,0,0,.45); cursor: zoom-in; }
+  .charte-cadre img { width: 100%; height: auto; }
 
   /* ---------- concept ---------- */
   #concept { background: linear-gradient(180deg, var(--charbon), var(--accent-fonce)); }
@@ -139,11 +141,12 @@
   .galerie-grille figcaption { font-size: 13px; color: var(--gris2); margin-top: 10px; }
   .galerie-grille figcaption::before { content: "— "; color: var(--accent); }
 
-  /* ---------- fresques plein écran ---------- */
-  .fresque { min-height: 92vh; display: flex; align-items: flex-end; position: relative; overflow: hidden; }
-  .fresque .fond { position: absolute; inset: -12% 0; background-size: cover; background-position: center; will-change: transform; }
-  .fresque .voile { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15,20,25,.55), transparent 40%, rgba(15,20,25,.82)); }
-  .fresque .legende { position: relative; z-index: 2; padding: 40px 6vw 52px; }
+  /* ---------- fresques plein écran : visuel ENTIER (contain) sur fond flouté ---------- */
+  .fresque { min-height: 92vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; position: relative; overflow: hidden; padding: 56px 4vw; }
+  .fresque .fond { position: absolute; inset: -14% 0; background-size: cover; background-position: center; filter: blur(26px) brightness(.38); will-change: transform; }
+  .fresque .voile { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15,20,25,.4), transparent 40%, rgba(15,20,25,.6)); }
+  .fresque .visuel { position: relative; z-index: 2; max-height: 66vh; max-width: min(100%, 1100px); width: auto; object-fit: contain; border-radius: 12px; box-shadow: 0 26px 80px rgba(0,0,0,.6); cursor: zoom-in; }
+  .fresque .legende { position: relative; z-index: 2; text-align: center; max-width: 860px; }
   .fresque .legende h3 { font-size: clamp(20px, 3vw, 32px); font-weight: 900; text-transform: uppercase; }
   .fresque .legende p { color: var(--gris); margin-top: 6px; font-size: 14px; }
 
@@ -188,7 +191,7 @@
   .compare-carte:hover { transform: translateY(-6px); }
   .compare-carte.actif { border-color: var(--caccent); }
   .compare-carte > img.logo { height: 74px; object-fit: contain; }
-  .compare-carte .charte-mini { border-radius: 8px; max-height: 150px; object-fit: cover; width: 100%; }
+  .compare-carte .charte-mini { border-radius: 8px; height: 190px; width: auto; max-width: 100%; object-fit: contain; cursor: zoom-in; }
   .compare-carte .mots { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
   .compare-carte .mots span {
     font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
@@ -220,7 +223,12 @@
     .concept-grille, .pub-grille, .menu-grille { grid-template-columns: 1fr; gap: 26px; }
     .galerie-grille { grid-template-columns: 1fr; }
     .compare-grille { grid-template-columns: 1fr; }
-    #hero { height: 100svh; }
+    .marque img { height: 44px; }
+    .logo-btn { padding: 4px 10px; }
+    .logo-btn img { height: 32px; max-width: 92px; }
+    .logo-btn .lib { font-size: 8.5px; }
+    .fresque .visuel { max-height: 58vh; }
+    #hero { height: 100svh; padding-top: 78px; }
     .marque span { display: none; }
     .panneau { left: 8px; right: 8px; max-width: none; }
     #pub-prec { left: 6px; } #pub-suiv { right: 6px; }
@@ -277,7 +285,7 @@
         <p id="concept-p3"></p>
         <div class="motscles" id="motscles"></div>
       </div>
-      <div class="parallax" data-reveal><img id="charte-img" src="img/br1/charte.jpg" alt="Charte graphique du branding"></div>
+      <div class="charte-cadre" data-reveal><img id="charte-img" class="zoomable" src="img/br1/charte.jpg" alt="Charte graphique du branding"></div>
     </div>
   </section>
 
@@ -294,10 +302,12 @@
   <div id="fresques">
     <section class="fresque" id="fresque1">
       <div class="fond" id="fresque1-fond"></div><div class="voile"></div>
+      <img class="visuel zoomable" id="fresque1-img" src="img/br1/mur1.jpg" alt="La fresque du mur gauche">
       <div class="legende" data-reveal><h3>La fresque du mur gauche</h3><p id="fresque1-p"></p></div>
     </section>
     <section class="fresque" id="fresque2">
       <div class="fond" id="fresque2-fond"></div><div class="voile"></div>
+      <img class="visuel zoomable" id="fresque2-img" src="img/br1/mur2.jpg" alt="La fresque du mur droit">
       <div class="legende" data-reveal><h3>La fresque du mur droit</h3><p id="fresque2-p"></p></div>
     </section>
   </div>
@@ -518,7 +528,7 @@ BRANDINGS.forEach(function (b, i) {
   carte.setAttribute("data-reveal", "");
   carte.innerHTML =
     '<img class="logo" src="' + b.logo + '" alt="' + b.lib + '">' +
-    '<img class="charte-mini" src="img/' + b.id + '/charte.jpg" alt="Charte ' + b.lib + '">' +
+    '<img class="charte-mini zoomable" src="img/' + b.id + '/charte.jpg" alt="Charte ' + b.lib + '">' +
     '<div class="mots">' + b.motscles.map(function (m) { return "<span>" + m + "</span>"; }).join("") + "</div>" +
     '<button class="explorer">Explorer ce branding</button>';
   carte.querySelector(".explorer").addEventListener("click", function () {
@@ -549,6 +559,8 @@ function majContenu() {
   });
   $("fresque1-fond").style.backgroundImage = "url('img/" + b.id + "/mur1.jpg')";
   $("fresque2-fond").style.backgroundImage = "url('img/" + b.id + "/mur2.jpg')";
+  $("fresque1-img").src = "img/" + b.id + "/mur1.jpg";
+  $("fresque2-img").src = "img/" + b.id + "/mur2.jpg";
   $("fresque1-p").textContent = b.fresques[0];
   $("fresque2-p").textContent = b.fresques[1];
   $("menu-formules").src = "img/" + b.id + "/menu-formules.jpg";
@@ -648,6 +660,7 @@ function choisirBranding(i) {
   volet.classList.add("entre");
   setTimeout(function () {
     brandingActif = i;
+    etapeActive = 0;           /* nouveau branding = la visite repart à l'étape 1 */
     majContenu();
     chargerViewer();
     volet.classList.remove("entre");
