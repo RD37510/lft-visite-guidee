@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sourcing — La French Touch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --charbon:#0F1419; --carte:#1b232b; --gris:#E6E6E6; --gris2:#9aa3ab; --accent:#E63946; --jaune:#F4A623; --ligne:#2a323b; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'Montserrat','Segoe UI',Arial,sans-serif; background:var(--charbon); color:#fff; overflow-x:hidden; }
+  img { max-width:100%; display:block; }
+  a { color:inherit; }
+
+  header { position:fixed; top:0; left:0; right:0; z-index:50; display:flex; align-items:center; flex-wrap:wrap; gap:6px 18px;
+    padding:8px 16px; background:rgba(15,20,25,.93); backdrop-filter:blur(6px); border-bottom:2px solid var(--accent); }
+  .marque { display:flex; align-items:center; gap:10px; }
+  .marque img { height:44px; width:auto; }
+  .marque span { font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gris2); white-space:nowrap; }
+  .menu-site { display:flex; gap:2px; flex-wrap:wrap; margin-left:auto; }
+  .menu-site a { font-size:11.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--gris2);
+    text-decoration:none; padding:8px 11px; border-radius:8px; transition:color .2s, background .2s; }
+  .menu-site a:hover { color:#fff; background:rgba(255,255,255,.06); }
+  .menu-site a.actif { color:#fff; background:var(--accent); }
+
+  main { max-width:1060px; margin:0 auto; padding:130px 5vw 80px; }
+  .sur-titre { color:var(--accent); font-weight:800; letter-spacing:3px; text-transform:uppercase; font-size:12px; margin-bottom:10px; }
+  h1.page-titre { font-size:clamp(30px,5vw,52px); font-weight:900; text-transform:uppercase; letter-spacing:1px; line-height:1.1; }
+  h1.page-titre em { color:var(--accent); font-style:normal; }
+  .intro { color:var(--gris2); margin-top:14px; max-width:760px; line-height:1.7; font-size:15px; }
+
+  .doc { line-height:1.75; font-size:15px; color:var(--gris); }
+  .doc h1 { font-size:clamp(22px,3.4vw,32px); font-weight:900; text-transform:uppercase; letter-spacing:.5px; color:#fff;
+    margin:46px 0 14px; padding-top:26px; border-top:1px solid var(--ligne); scroll-margin-top:110px; }
+  .doc h1:first-child { border-top:none; margin-top:10px; padding-top:0; }
+  .doc h2 { font-size:19px; font-weight:800; color:var(--jaune); margin:30px 0 10px; scroll-margin-top:110px; }
+  .doc p { margin:10px 0; }
+  .doc strong { color:#fff; }
+  .doc em { color:var(--gris2); }
+  .doc ul, .doc ol { margin:10px 0 10px 22px; }
+  .doc li { margin:5px 0; }
+  .doc img { margin:18px auto; border-radius:12px; box-shadow:0 14px 40px rgba(0,0,0,.45); }
+  .tbl { overflow-x:auto; margin:18px 0; border:1px solid var(--ligne); border-radius:12px; }
+  .doc table { border-collapse:collapse; width:100%; min-width:560px; font-size:13.5px; }
+  .doc th, .doc td { border:1px solid var(--ligne); padding:9px 12px; text-align:left; vertical-align:top; }
+  .doc tr:nth-child(odd) td { background:rgba(255,255,255,.025); }
+  .doc td p { margin:3px 0; }
+
+  .sommaire { background:var(--carte); border:1px solid var(--ligne); border-left:4px solid var(--accent);
+    border-radius:12px; padding:18px 22px; margin:26px 0 8px; }
+  .sommaire .lbl { font-weight:800; letter-spacing:2px; text-transform:uppercase; font-size:12px; color:var(--accent); margin-bottom:10px; }
+  .sommaire a { display:block; color:var(--gris); text-decoration:none; font-size:13.5px; padding:4px 0; }
+  .sommaire a:hover { color:var(--jaune); }
+  .sommaire a.n2 { padding-left:18px; color:var(--gris2); }
+
+  footer { display:flex; flex-direction:column; align-items:center; gap:10px; padding:42px 16px 48px; border-top:1px solid #232b33; }
+  footer img { height:52px; }
+  footer p { color:var(--gris2); font-size:12px; letter-spacing:1px; }
+
+  [data-reveal] { opacity:0; transform:translateY(26px); transition:opacity .6s ease, transform .6s ease; }
+  [data-reveal].visible { opacity:1; transform:none; }
+  @media (max-width:860px) { main { padding-top:150px; } }
+  
+  .attente { background:var(--carte); border:1px dashed var(--ligne); border-radius:18px; text-align:center;
+    padding:70px 24px; margin-top:40px; }
+  .attente .pict { font-size:52px; }
+  .attente h2 { font-size:24px; font-weight:900; text-transform:uppercase; margin-top:14px; }
+  .attente p { color:var(--gris2); max-width:520px; margin:12px auto 0; line-height:1.7; font-size:14.5px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="marque">
+    <a href="index.html"><img src="logo-br1.png" alt="La French Touch"></a>
+    <span>Le projet</span>
+  </div>
+  <nav class="menu-site"><a href="todo.html">Todo liste</a><a href="index.html">Visite 3D</a><a href="business.html">Business</a><a href="statuts.html">Statuts</a><a href="sourcing.html" class="actif">Sourcing</a></nav>
+</header>
+<main>
+  <div data-reveal>
+    <div class="sur-titre">Équipement & import</div>
+    <h1 class="page-titre">Sourcing <em>du restaurant</em></h1>
+    
+  </div>
+
+  <section class="attente" data-reveal>
+    <div class="pict">🚢</div>
+    <h2>Contenu en préparation</h2>
+    <p>Cette page accueillera le dossier sourcing du restaurant : équipements, fournisseurs,
+    import Chine → Canaries (Superbuy, douane, IGIC), comparatifs et tableaux récapitulatifs.</p>
+  </section>
+</main>
+<footer>
+  <img src="logo-br1.png" alt="La French Touch">
+  <p>© La French Touch 2026</p>
+</footer>
+<script>
+var obs = new IntersectionObserver(function (es) {
+  es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+Array.prototype.forEach.call(document.querySelectorAll('[data-reveal]'), function (el) { obs.observe(el); });
+
+</script>
+</body>
+</html>

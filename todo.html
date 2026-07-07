@@ -1,0 +1,436 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feuille de route — La French Touch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root{
+  --charbon:#0B0B0B; --charbon2:#161311; --charbon3:#1e1a17;
+  --creme:#F7F3EA; --rouge:#EB4B45; --jaune:#F4A623; --orange:#F2A11D;
+  --bleu:#2C79D3; --rougefr:#E63946; --muted:#9a9189; --line:#2a2521;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--charbon); color:var(--creme);
+  font-family:'Poppins',system-ui,sans-serif; font-weight:300;
+  line-height:1.55; -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(900px 500px at 80% -5%, rgba(235,75,69,.18), transparent 60%),
+    radial-gradient(700px 500px at -10% 10%, rgba(244,166,35,.12), transparent 55%);
+}
+.wrap{max-width:920px; margin:0 auto; padding:0 20px 80px}
+
+/* ---------- HERO ---------- */
+.hero{text-align:center; padding:62px 16px 26px; position:relative}
+.kicker{font-family:'Bebas Neue'; letter-spacing:.32em; color:var(--jaune); font-size:18px; margin-bottom:10px}
+.title{font-family:'Bebas Neue'; font-weight:400; font-size:clamp(54px,11vw,104px); line-height:.92; margin:0; letter-spacing:.01em}
+.title .touch{font-family:'Pacifico'; color:var(--orange); display:inline-block; font-size:.62em; transform:rotate(-4deg); margin-left:.05em}
+.sub{font-family:'Bebas Neue'; letter-spacing:.18em; font-size:clamp(16px,3.4vw,24px); color:var(--creme); margin-top:14px}
+.tag{margin-top:6px; color:var(--muted); font-size:13px; letter-spacing:.05em}
+.flames{height:4px; width:160px; margin:22px auto 0; border-radius:4px;
+  background:linear-gradient(90deg,var(--rougefr),var(--rouge),var(--orange),var(--jaune))}
+
+/* ---------- PROGRESS ---------- */
+.gauge{position:sticky; top:0; z-index:30; background:rgba(11,11,11,.92);
+  backdrop-filter:blur(8px); border-bottom:1px solid var(--line); padding:12px 0; margin-top:26px}
+.gauge .inner{max-width:920px; margin:0 auto; padding:0 20px; display:flex; align-items:center; gap:16px}
+.gauge .lbl{font-family:'Bebas Neue'; letter-spacing:.12em; font-size:20px; white-space:nowrap}
+.gauge .lbl b{color:var(--jaune)}
+.bar{flex:1; height:14px; background:#241f1b; border-radius:20px; overflow:hidden; border:1px solid #36302a}
+.bar>span{display:block; height:100%; width:0%;
+  background:linear-gradient(90deg,var(--rougefr),var(--rouge),var(--orange),var(--jaune));
+  transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.state{font-family:'Bebas Neue'; letter-spacing:.1em; font-size:18px; color:var(--orange); white-space:nowrap}
+.btn-reset{font-family:'Poppins'; font-size:11px; color:var(--muted); background:transparent;
+  border:1px solid var(--line); border-radius:20px; padding:5px 12px; cursor:pointer; white-space:nowrap}
+.btn-reset:hover{color:var(--creme); border-color:var(--rouge)}
+
+/* ---------- INTRO NOTE ---------- */
+.note{background:var(--charbon2); border:1px solid var(--line); border-left:4px solid var(--jaune);
+  border-radius:12px; padding:16px 18px; margin:30px 0 8px; font-size:14px; color:#d7cfc4}
+.note b{color:var(--creme)}
+.dur{display:inline-block;font-family:'Poppins';font-size:11px;font-weight:600;color:#0B0B0B;background:var(--jaune);border-radius:20px;padding:1px 8px;margin-left:5px;white-space:nowrap;vertical-align:middle}
+.delais{background:var(--charbon2);border:1px solid var(--line);border-left:4px solid var(--rouge);border-radius:12px;padding:16px 18px;margin:18px 0 8px}
+.delais h3{font-family:'Bebas Neue';letter-spacing:.08em;font-size:23px;margin:0 0 12px;color:var(--jaune)}
+.delais .row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:14px;color:#e9e2d8}
+.delais .row:last-of-type{border-bottom:none}
+.delais .row .d{font-family:'Poppins';font-weight:600;font-size:12.5px;color:#0B0B0B;background:var(--jaune);border-radius:20px;padding:2px 11px;white-space:nowrap}
+.delais .row.total .l{font-weight:600;color:var(--creme)}
+.delais .row.total .d{background:var(--rouge);color:#fff}
+.delais .cav{font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.55}
+.delais .cav b{color:#d7cfc4}
+
+/* ---------- PHASE ---------- */
+.phase{margin-top:34px; border:1px solid var(--line); border-radius:18px; overflow:hidden;
+  background:linear-gradient(180deg,var(--charbon2),var(--charbon)); scroll-margin-top:80px}
+.ph-head{display:flex; align-items:center; gap:16px; padding:20px 22px;
+  border-bottom:1px solid var(--line); position:relative}
+.ph-head::before{content:""; position:absolute; left:0; top:0; bottom:0; width:6px; background:var(--accent)}
+.ph-num{font-family:'Bebas Neue'; font-size:46px; line-height:1; color:var(--accent);
+  -webkit-text-stroke:1px var(--accent); min-width:54px}
+.ph-ic{width:38px; height:38px; flex:none; color:var(--accent)}
+.ph-ic svg{width:100%; height:100%; stroke:var(--accent); fill:none; stroke-width:1.7}
+.ph-tt{flex:1}
+.ph-tt h2{font-family:'Bebas Neue'; font-weight:400; letter-spacing:.06em;
+  font-size:clamp(24px,5vw,34px); margin:0; line-height:1}
+.ph-tt .obj{font-size:13px; color:var(--muted); margin-top:4px}
+.ph-prog{font-family:'Bebas Neue'; letter-spacing:.08em; font-size:20px; color:var(--accent);
+  background:rgba(255,255,255,.04); border:1px solid var(--line); border-radius:20px; padding:4px 12px; white-space:nowrap}
+
+.ph-body{padding:8px 22px 22px}
+.step{margin-top:18px}
+.step .eyebrow{display:flex; align-items:center; gap:10px; font-family:'Bebas Neue';
+  letter-spacing:.1em; font-size:16px; color:var(--accent); margin-bottom:8px}
+.step .eyebrow .dot{width:8px; height:8px; border-radius:50%; background:var(--accent); flex:none}
+
+/* ---------- TASK ---------- */
+.task{display:flex; align-items:flex-start; gap:12px; padding:9px 10px; border-radius:10px;
+  cursor:pointer; transition:background .15s; user-select:none}
+.task:hover{background:rgba(255,255,255,.035)}
+.task input{position:absolute; opacity:0; width:0; height:0}
+.box{width:22px; height:22px; flex:none; margin-top:1px; border-radius:6px; border:2px solid #4a433c;
+  background:#171310; display:grid; place-items:center; transition:all .15s}
+.box svg{width:13px; height:13px; stroke:var(--charbon); stroke-width:3.5; fill:none;
+  opacity:0; transform:scale(.5); transition:all .15s}
+.task input:checked + .box{background:var(--accent); border-color:var(--accent)}
+.task input:checked + .box svg{opacity:1; transform:scale(1)}
+.task input:focus-visible + .box{outline:2px solid var(--creme); outline-offset:2px}
+.txt{font-size:14.5px; color:#e9e2d8; padding-top:1px}
+.txt .hl{color:var(--jaune); font-weight:500}
+.txt code{font-family:ui-monospace,Menlo,monospace; font-size:12.5px; background:#241f1b;
+  border:1px solid var(--line); border-radius:5px; padding:1px 6px; color:var(--creme)}
+.task input:checked ~ .txt{color:#6f675e; text-decoration:line-through; text-decoration-color:#4a433c}
+
+/* star highlight on the brand-decor step */
+.step.flag .eyebrow{color:var(--jaune)}
+.step.flag{background:rgba(244,166,35,.06); border:1px dashed rgba(244,166,35,.35);
+  border-radius:12px; padding:12px 12px 6px}
+
+/* ---------- FOOTER ---------- */
+.foot{text-align:center; margin-top:54px; padding-top:28px; border-top:1px solid var(--line)}
+.foot .big{font-family:'Bebas Neue'; letter-spacing:.16em; font-size:clamp(22px,5vw,34px)}
+.foot .big .a{color:var(--rougefr)} .foot .big .b{color:var(--jaune)} .foot .big .c{color:var(--bleu)}
+.foot .sig{font-family:'Pacifico'; color:var(--orange); font-size:26px; margin-top:6px}
+.foot .stripe{height:4px; width:200px; margin:18px auto 0; border-radius:4px;
+  background:linear-gradient(90deg,var(--bleu),var(--creme),var(--rougefr))}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{
+  body{background:#fff; color:#111}
+  .gauge,.btn-reset{display:none}
+  .phase{break-inside:avoid; border-color:#ccc; background:#fff}
+  .txt,.note{color:#222} .box{border-color:#888}
+}
+</style>
+
+<style>
+.menu-site{position:sticky;top:0;z-index:40;display:flex;gap:2px;flex-wrap:wrap;justify-content:center;
+  background:rgba(11,11,11,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:9px 12px}
+.menu-site a{font-family:'Poppins',sans-serif;font-size:11.5px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;padding:8px 11px;border-radius:8px;transition:color .2s,background .2s}
+.menu-site a:hover{color:var(--creme);background:rgba(255,255,255,.06)}
+.menu-site a.actif{color:#fff;background:var(--rouge)}
+.gauge{top:46px}
+</style>
+<nav class="menu-site"><a href="todo.html" class="actif">Todo liste</a><a href="index.html">Visite 3D</a><a href="business.html">Business</a><a href="statuts.html">Statuts</a><a href="sourcing.html">Sourcing</a></nav>
+
+
+<div class="hero">
+  <div class="kicker">FEUILLE DE ROUTE — DU CONCEPT À L'OUVERTURE</div>
+  <h1 class="title">LA FRENCH <span class="touch">Touch</span></h1>
+  <div class="sub">POLLO A LA BRASA · MASPALOMAS</div>
+  <div class="tag">Ta to-do list complète, étape par étape, pour ouvrir le restaurant.</div>
+  <div class="flames"></div>
+</div>
+
+<div class="gauge">
+  <div class="inner">
+    <div class="lbl">CUISSON DU PROJET&nbsp;: <b id="pct">0%</b></div>
+    <div class="bar"><span id="fill"></span></div>
+    <div class="state" id="state">Cru</div>
+    <button class="btn-reset" id="reset">Réinitialiser</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="note">
+    <b>Comment l'utiliser :</b> coche chaque tâche au fur et à mesure — ta progression se sauvegarde
+    automatiquement. Les phases sont dans l'ordre logique&nbsp;: on ne lance pas la cuisine avant d'exister
+    légalement. <b>Astuce</b>&nbsp;: les phases 2 (local) et 4 (digital) peuvent avancer en parallèle pour
+    gagner du temps.
+  </div>
+
+  <div class="delais">
+    <h3>⏱ Délais à prévoir (indicatifs)</h3>
+    <div class="row"><span class="l">NIE des 4 associés (non-résidents)</span><span class="d">2 à 6 semaines</span></div>
+    <div class="row"><span class="l">Constitution de la S.L. (statuts sur-mesure)</span><span class="d">2 à 4 semaines</span></div>
+    <div class="row"><span class="l">Licence d'ouverture — actividad calificada (LE goulot)</span><span class="d">2 à 4 mois</span></div>
+    <div class="row"><span class="l">Travaux &amp; aménagement du local</span><span class="d">1 à 3 mois</span></div>
+    <div class="row"><span class="l">Livraison du matériel de cuisine pro</span><span class="d">2 à 8 semaines</span></div>
+    <div class="row total"><span class="l">Recherche du local → ouverture</span><span class="d">4 à 8 mois</span></div>
+    <div class="cav"><b>À confirmer avec ton gestor et la mairie</b> — ces délais varient selon la commune (sources : gestorías &amp; administrations espagnoles, 2026). <b>Astuce :</b> reprendre un local qui a DÉJÀ une licence de restaurant = simple changement de titularité = plusieurs mois gagnés.</div>
+  </div>
+
+  <!-- ====================== PHASE 1 ====================== -->
+  <section class="phase" id="p1" style="--accent:var(--rouge)">
+    <div class="ph-head">
+      <div class="ph-num">01</div>
+      <div class="ph-ic"><svg viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <div class="ph-tt"><h2>JURIDIQUE & FONDATIONS</h2><div class="obj">Objectif : exister légalement et sécuriser l'association à 4.</div></div>
+      <div class="ph-prog" data-prog="p1">0/0</div>
+    </div>
+    <div class="ph-body">
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>1.1 — Gestor & numéros d'identité</div>
+        <label class="task"><input type="checkbox" data-id="t101"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Choisir et mandater un <span class="hl">gestor / asesoría à Gran Canaria</span> — demander 2-3 devis, et vérifier qu'il gère le montage transfrontalier (associés non-résidents + comptes courants).</span></label>
+        <label class="task"><input type="checkbox" data-id="t102"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Obtenir le <span class="hl">NIE des 4 associés</span> — formulaire <code>EX-15</code> + taxe <code>790-012</code> (≈ 9,84 €). Voie la plus simple : procuration notariée au gestor.<span class="dur">⏱ 2-6 sem.</span></span></label>
+        <label class="task"><input type="checkbox" data-id="t103"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Pour l'associé qui s'installe sur place : <span class="hl">Certificado de Registro UE</span> (<code>EX-18</code>).</span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>1.2 — Créer la société (S.L.)</div>
+        <label class="task"><input type="checkbox" data-id="t104"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Réserver la dénomination sociale — <span class="hl">certificat négatif</span> du Registro Mercantil Central.<span class="dur">⏱ 1-3 j.</span></span></label>
+        <label class="task"><input type="checkbox" data-id="t105"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Finaliser les <span class="hl">statuts</span> (objet : restauration ; gérant unique) — la version espagnole fait foi.</span></label>
+        <label class="task"><input type="checkbox" data-id="t106"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Déposer le <span class="hl">capital social</span> (≥ 3 000 € recommandé) sur un compte bloqué.</span></label>
+        <label class="task"><input type="checkbox" data-id="t107"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Signer chez le <span class="hl">notaire</span>, inscrire au <span class="hl">Registro Mercantil</span>, puis obtenir le <code>CIF</code> (numéro fiscal de la société).<span class="dur">⏱ 2-4 sem.</span></span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>1.3 — Pacte d'associés & apports</div>
+        <label class="task"><input type="checkbox" data-id="t108"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Signer le <span class="hl">pacte d'associés + vesting</span> (calendrier 4 ans / cliff 1 an sur les 2 opérationnels).</span></label>
+        <label class="task"><input type="checkbox" data-id="t109"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Formaliser les <span class="hl">conventions de comptes courants</span> des investisseurs (montant, taux, échéances).</span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>1.4 — Régimes sociaux & banque</div>
+        <label class="task"><input type="checkbox" data-id="t110"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Gérant : <span class="hl">alta autónomo societario (RETA)</span> — activer la <span class="hl">tarifa plana</span> (80 €/mois) ou vérifier la Cuota Cero canarienne.</span></label>
+        <label class="task"><input type="checkbox" data-id="t111"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Déposer le <span class="hl">modèle 036</span> uniquement si le gérant facture la société (sinon paie en nómina).</span></label>
+        <label class="task"><input type="checkbox" data-id="t112"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">2ᵉ opérationnel : statut <span class="hl">salarié (régime général)</span> ou autónomo selon le cas.</span></label>
+        <label class="task"><input type="checkbox" data-id="t113"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Ouvrir le <span class="hl">compte bancaire professionnel</span> de la société.</span></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== PHASE 2 ====================== -->
+  <section class="phase" id="p2" style="--accent:var(--jaune)">
+    <div class="ph-head">
+      <div class="ph-num">02</div>
+      <div class="ph-ic"><svg viewBox="0 0 24 24"><path d="M12 3c1 3-1 4-1 6a3 3 0 006 0c0-1 0-2-1-3 2 1 4 4 4 8a8 8 0 01-16 0c0-4 3-7 5-9 0 2 1 3 2 3 2 0 1-3 1-5z"/></svg></div>
+      <div class="ph-tt"><h2>LOCAL, TRAVAUX & DÉCOR</h2><div class="obj">Objectif : un lieu conforme, opérationnel et 100 % aux couleurs de la marque.</div></div>
+      <div class="ph-prog" data-prog="p2">0/0</div>
+    </div>
+    <div class="ph-body">
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>2.1 — Local & bail</div>
+        <label class="task"><input type="checkbox" data-id="t201"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Confirmer le local front de mer — <span class="hl">vérifier en mairie que l'usage « hostelería » est autorisé AVANT de signer.</span></span></label>
+        <label class="task"><input type="checkbox" data-id="t202"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Négocier et signer le <span class="hl">bail commercial</span> (durée, loyer, travaux à charge de qui).</span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>2.2 — Licences & conformité</div>
+        <label class="task"><input type="checkbox" data-id="t203"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Déposer la <span class="hl">licencia de apertura / actividad</span> (mairie de San Bartolomé de Tirajana).<span class="dur">⏱ 2-4 mois</span></span></label>
+        <label class="task"><input type="checkbox" data-id="t204"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Demander l'<span class="hl">autorisation de terrasse</span> (atout fort en front de mer).</span></label>
+        <label class="task"><input type="checkbox" data-id="t205"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Validation <span class="hl">sanitaire (Sanidad)</span> + mettre en place le <span class="hl">plan HACCP</span>.</span></label>
+        <label class="task"><input type="checkbox" data-id="t206"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Conformité <span class="hl">incendie, extraction et accessibilité PMR</span>.</span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>2.3 — Aménagement & cuisine</div>
+        <label class="task"><input type="checkbox" data-id="t207"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Chiffrer les travaux — <span class="hl">2-3 devis d'entreprises locales</span> (c'est LE verrou budgétaire à lever).</span></label>
+        <label class="task"><input type="checkbox" data-id="t208"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Cuisine pro : <span class="hl">rôtissoire / four à braise (charbon)</span>, hotte & extraction, froid, plonge.</span></label>
+        <label class="task"><input type="checkbox" data-id="t209"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Salle 30-60 couverts : mobilier, <span class="hl">comptoir à emporter</span>, signalétique.</span></label>
+      </div>
+      <div class="step flag">
+        <div class="eyebrow"><span class="dot"></span>★ 2.4 — DÉCOR DE MARQUE (suis la charte !)</div>
+        <label class="task"><input type="checkbox" data-id="t210"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Palette : <span class="hl">Noir Charbon</span> <code>#0B0B0B</code> dominant + <span class="hl">Rouge Sunset</span> <code>#EB4B45</code> & <span class="hl">Jaune Grill</span> <code>#F4A623</code> en touches.</span></label>
+        <label class="task"><input type="checkbox" data-id="t211"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt"><span class="hl">Enseigne lumineuse</span> extérieure avec le logo en couleur.</span></label>
+        <label class="task"><input type="checkbox" data-id="t212"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Aménager au moins UN <span class="hl">« mur instagrammable »</span> / coin photo (palmier, lignes rétro, néon flamme).</span></label>
+        <label class="task"><input type="checkbox" data-id="t213"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Univers visuel : <span class="hl">flammes, marques de grill, texture charbon, soleil</span> sur les murs et supports.</span></label>
+        <label class="task"><input type="checkbox" data-id="t214"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Packaging assorti : <span class="hl">boîtes noires + touches colorées</span>, sachets kraft tamponnés, gobelets noirs mats.</span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>2.5 — Sourcing &amp; recherche de matériel</div>
+        <label class="task"><input type="checkbox" data-id="t215"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Lister le <span class="hl">matériel clé</span> : rôtissoire / four à braise (charbon), hotte &amp; extraction, chambre froide, plonge, mobilier de salle, comptoir, TPV.</span></label>
+        <label class="task"><input type="checkbox" data-id="t216"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Comparer <span class="hl">neuf vs occasion (segunda mano) vs renting/leasing</span> — demander 2-3 devis à des fournisseurs d'hostelería (Canaries ou péninsule).</span></label>
+        <label class="task"><input type="checkbox" data-id="t217"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt"><span class="hl">Commander tôt</span> et vérifier les délais de livraison (sinon ça retarde l'ouverture).<span class="dur">⏱ 2-8 sem.</span></span></label>
+        <label class="task"><input type="checkbox" data-id="t218"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Vérifier <span class="hl">garanties, SAV et certifications</span> du matériel (exigées pour la licence d'activité).</span></label>
+        <label class="task"><input type="checkbox" data-id="t219"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Astuce : un local <span class="hl">déjà équipé ou avec licence resto existante</span> = du temps ET de l'argent gagnés.</span></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== PHASE 3 ====================== -->
+  <section class="phase" id="p3" style="--accent:var(--orange)">
+    <div class="ph-head">
+      <div class="ph-num">03</div>
+      <div class="ph-ic"><svg viewBox="0 0 24 24"><path d="M15 4a4 4 0 00-7 2 4 4 0 00.5 6.5L6 18l-2 2 2 .5L7 23l1.8-2.4 6-6A4 4 0 0015 4z"/></svg></div>
+      <div class="ph-tt"><h2>OFFRE, CUISINE & OPÉRATIONS</h2><div class="obj">Objectif : une carte rentable et standardisée, prête à servir midi ET soir.</div></div>
+      <div class="ph-prog" data-prog="p3">0/0</div>
+    </div>
+    <div class="ph-body">
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>3.1 — Carte & prix</div>
+        <label class="task"><input type="checkbox" data-id="t301"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Finaliser la carte : <span class="hl">1/4, 1/2, poulet entier</span> + accompagnements + <span class="hl">sauces maison</span> + desserts FR.</span></label>
+        <label class="task"><input type="checkbox" data-id="t302"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Fixer les prix pour un <span class="hl">ticket moyen &lt; 12 €</span> et viser un food cost autour de <span class="hl">30 %</span>.</span></label>
+        <label class="task"><input type="checkbox" data-id="t303"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Éditer la <span class="hl">carte trilingue FR / ES / EN</span>.</span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>3.2 — Recettes & fournisseurs</div>
+        <label class="task"><input type="checkbox" data-id="t304"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Figer les <span class="hl">fiches techniques</span> des recettes signature (standardisation = qualité constante).</span></label>
+        <label class="task"><input type="checkbox" data-id="t305"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Sourcer les <span class="hl">fournisseurs</span> (poulet, marinade, charbon, accompagnements, packaging) + un <span class="hl">fournisseur de secours</span>.</span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>3.3 — Équipe</div>
+        <label class="task"><input type="checkbox" data-id="t306"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Définir les postes (cuisine, salle, plonge) et les <span class="hl">plannings qui couvrent le SOIR</span> (créneau libre).</span></label>
+        <label class="task"><input type="checkbox" data-id="t307"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Recruter et établir les <span class="hl">contrats de travail</span> (droit espagnol).</span></label>
+        <label class="task"><input type="checkbox" data-id="t308"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Former aux <span class="hl">recettes, à l'hygiène et au service de marque</span>.</span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>3.4 — Outils & livraison</div>
+        <label class="task"><input type="checkbox" data-id="t309"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Installer le <span class="hl">TPV / caisse</span> + <span class="hl">facturation électronique (VeriFactu)</span>.</span></label>
+        <label class="task"><input type="checkbox" data-id="t310"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Ouvrir les comptes livraison : <span class="hl">Glovo, Just Eat, Uber Eats, GC Express</span>.</span></label>
+        <label class="task"><input type="checkbox" data-id="t311"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Paramétrer menus, <span class="hl">photos</span> et zones de livraison sur chaque plateforme.</span></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== PHASE 4 ====================== -->
+  <section class="phase" id="p4" style="--accent:var(--bleu)">
+    <div class="ph-head">
+      <div class="ph-num">04</div>
+      <div class="ph-ic"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
+      <div class="ph-tt"><h2>MARQUE, SITE & RÉSEAUX</h2><div class="obj">Objectif : une présence digitale forte AVANT l'ouverture (modèle Tasty Crousty).</div></div>
+      <div class="ph-prog" data-prog="p4">0/0</div>
+    </div>
+    <div class="ph-body">
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>4.1 — Décliner la charte</div>
+        <label class="task"><input type="checkbox" data-id="t401"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Décliner le logo sur tous les supports (enseigne, packaging, carte, tenues).</span></label>
+        <label class="task"><input type="checkbox" data-id="t402"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Typo cohérente partout : <span class="hl">Bebas Neue</span> (titres), <span class="hl">Poppins</span> (texte), script <span class="hl">Pacifico</span> pour « Touch ».</span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>4.2 — Site web marquant</div>
+        <label class="task"><input type="checkbox" data-id="t403"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Site <span class="hl">mobile-first aux couleurs de la marque</span> avec <span class="hl">commande en ligne / click & collect</span>.</span></label>
+        <label class="task"><input type="checkbox" data-id="t404"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Intégrer : liens livraison, localisation, horaires, réseaux sociaux.</span></label>
+        <label class="task"><input type="checkbox" data-id="t405"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Réserver le <span class="hl">nom de domaine</span> + créer et renseigner la <span class="hl">fiche Google Business</span>.</span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>4.3 — Réseaux sociaux</div>
+        <label class="task"><input type="checkbox" data-id="t406"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Créer <span class="hl">Instagram, TikTok, Facebook</span> (univers cohérent, bio claire).</span></label>
+        <label class="task"><input type="checkbox" data-id="t407"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Constituer la <span class="hl">banque de contenu photo/vidéo</span> « style charte » : fonds sombres, lumière chaude, feu, gros plans poulet.</span></label>
+        <label class="task"><input type="checkbox" data-id="t408"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Calendrier éditorial + <span class="hl">teasing pré-ouverture</span> (compte à rebours).</span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>4.4 — Budget & amplification</div>
+        <label class="task"><input type="checkbox" data-id="t409"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Planifier le <span class="hl">budget pub</span> (Meta Ads + TikTok Ads, géociblé sur la zone & les nationalités présentes).</span></label>
+        <label class="task"><input type="checkbox" data-id="t410"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Identifier <span class="hl">5-10 créateurs / influenceurs</span> food & tourisme locaux.</span></label>
+        <label class="task"><input type="checkbox" data-id="t411"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Préparer l'<span class="hl">opération avis Google</span> (QR codes en salle).</span></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== PHASE 5 ====================== -->
+  <section class="phase" id="p5" style="--accent:var(--rougefr)">
+    <div class="ph-head">
+      <div class="ph-num">05</div>
+      <div class="ph-ic"><svg viewBox="0 0 24 24"><path d="M12 2c3 2 5 6 5 10l-3 3h-4l-3-3c0-4 2-8 5-10z"/><path d="M9 18l-2 4 5-2 5 2-2-4"/></svg></div>
+      <div class="ph-tt"><h2>LANCEMENT</h2><div class="obj">Objectif : démarrer fort et récolter un maximum d'avis.</div></div>
+      <div class="ph-prog" data-prog="p5">0/0</div>
+    </div>
+    <div class="ph-body">
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>5.1 — Soft opening</div>
+        <label class="task"><input type="checkbox" data-id="t501"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Test grandeur nature (famille, amis, voisins) — <span class="hl">ajuster cuisine, service et timing</span> avant le vrai jour J.</span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>5.2 — Jour J</div>
+        <label class="task"><input type="checkbox" data-id="t502"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt"><span class="hl">Événement d'ouverture</span> : offre découverte, animation, présence d'influenceurs.</span></label>
+        <label class="task"><input type="checkbox" data-id="t503"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Activer la <span class="hl">campagne pub payante géociblée</span>.</span></label>
+        <label class="task"><input type="checkbox" data-id="t504"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Lancer la <span class="hl">collecte d'avis Google</span> dès le premier service (QR codes, incitation).</span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>5.3 — Premiers jours</div>
+        <label class="task"><input type="checkbox" data-id="t505"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Suivre les <span class="hl">KPIs</span> : tickets/jour, panier moyen, food cost, avis, retours clients.</span></label>
+        <label class="task"><input type="checkbox" data-id="t506"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt"><span class="hl">Corriger vite</span> ce qui coince (carte, temps d'attente, plannings).</span></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== PHASE 6 ====================== -->
+  <section class="phase" id="p6" style="--accent:var(--jaune)">
+    <div class="ph-head">
+      <div class="ph-num">06</div>
+      <div class="ph-ic"><svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M7 16l4-5 3 3 5-7"/></svg></div>
+      <div class="ph-tt"><h2>PILOTAGE & CROISSANCE</h2><div class="obj">Objectif : durer, rester rentable et grandir.</div></div>
+      <div class="ph-prog" data-prog="p6">0/0</div>
+    </div>
+    <div class="ph-body">
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>6.1 — Au quotidien</div>
+        <label class="task"><input type="checkbox" data-id="t601"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Tenir un <span class="hl">tableau de bord hebdomadaire</span> : CA, marge, food cost, note Google.</span></label>
+        <label class="task"><input type="checkbox" data-id="t602"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt"><span class="hl">Optimiser la carte</span> selon les ventes (garder les best-sellers, retirer ce qui ne tourne pas).</span></label>
+      </div>
+      <div class="step">
+        <div class="eyebrow"><span class="dot"></span>6.2 — Fidéliser & développer</div>
+        <label class="task"><input type="checkbox" data-id="t603"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Mettre en place la <span class="hl">fidélisation</span> : carte de fidélité, offres ciblées.</span></label>
+        <label class="task"><input type="checkbox" data-id="t604"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt"><span class="hl">Anticiper les pics</span> (saison touristique, week-ends) : stocks, équipe, horaires.</span></label>
+        <label class="task"><input type="checkbox" data-id="t605"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></span><span class="txt">Réinvestir malin : <span class="hl">Réserve pour Investissements aux Canaries (RIC)</span> pour alléger l'IS.</span></label>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <div class="big"><span class="a">DU FEU.</span> <span class="b">DU GOÛT.</span> <span class="c">DU PARTAGE.</span></div>
+    <div class="sig">La French Touch</div>
+    <div class="stripe"></div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const KEY='lft_roadmap_v1';
+  const boxes=[...document.querySelectorAll('.task input')];
+  const fill=document.getElementById('fill');
+  const pct=document.getElementById('pct');
+  const stateEl=document.getElementById('state');
+  const hasStore = (typeof window!=='undefined' && window.storage);
+
+  function stateLabel(p){
+    if(p===0) return 'Cru';
+    if(p<25) return 'Ça chauffe';
+    if(p<50) return 'Saignant';
+    if(p<75) return 'À point';
+    if(p<100) return 'Bien cuit';
+    return 'Prêt à servir 🔥';
+  }
+  function refresh(){
+    const done=boxes.filter(b=>b.checked).length;
+    const p=boxes.length? Math.round(done/boxes.length*100):0;
+    fill.style.width=p+'%'; pct.textContent=p+'%'; stateEl.textContent=stateLabel(p);
+    document.querySelectorAll('[data-prog]').forEach(el=>{
+      const ph=el.getAttribute('data-prog');
+      const inPh=document.querySelectorAll('#'+ph+' .task input');
+      const d=[...inPh].filter(b=>b.checked).length;
+      el.textContent=d+'/'+inPh.length;
+    });
+  }
+  async function loadState(){
+    let data={};
+    if(hasStore){ try{ const r=await window.storage.get(KEY); if(r&&r.value) data=JSON.parse(r.value);}catch(e){} }
+    else { try{ const s=localStorage.getItem(KEY); if(s) data=JSON.parse(s);}catch(e){} }
+    boxes.forEach(b=>{ if(data[b.dataset.id]) b.checked=true; });
+    refresh();
+  }
+  async function persist(){
+    const data={}; boxes.forEach(b=>{ if(b.checked) data[b.dataset.id]=1; });
+    if(hasStore){ try{ await window.storage.set(KEY, JSON.stringify(data)); }catch(e){} }
+    else { try{ localStorage.setItem(KEY, JSON.stringify(data)); }catch(e){} }
+  }
+  boxes.forEach(b=> b.addEventListener('change', ()=>{ refresh(); persist(); }));
+  document.getElementById('reset').addEventListener('click', async ()=>{
+    boxes.forEach(b=> b.checked=false); refresh();
+    if(hasStore){ try{ await window.storage.delete(KEY); }catch(e){} }
+    else { try{ localStorage.removeItem(KEY); }catch(e){} }
+  });
+  loadState();
+})();
+</script>
