@@ -3,24 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La French Touch — Visite guidée 3D</title>
+<title>La French Touch — Le projet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --charbon: #0F1419; --carte: #1b232b; --gris: #E6E6E6;
-    --accent: #FF5A00;   /* recolore selon le branding choisi */
+    --charbon: #0F1419; --carte: #1b232b; --gris: #E6E6E6; --gris2: #9aa3ab;
+    --accent: #E63946;          /* recoloré selon le branding (défaut BR1) */
+    --accent-fonce: #12181f;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { height: 100%; font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; background: var(--charbon); color: #fff; }
-  .layout { display: flex; flex-direction: column; height: 100%; }
-
-  /* ------- en-tete COMPACT (la 3D prend le reste) ------- */
-  header {
-    display: flex; align-items: center; gap: 14px;
-    padding: 5px 14px; background: var(--charbon);
-    border-bottom: 2px solid var(--accent); transition: border-color .3s;
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; background: var(--charbon); color: #fff; overflow-x: hidden; }
+  img { max-width: 100%; display: block; }
+  h2.section-titre {
+    font-size: clamp(24px, 4vw, 40px); font-weight: 900; text-transform: uppercase;
+    letter-spacing: 1px; line-height: 1.15;
   }
-  header h1 { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
-  header h1 span { color: var(--accent); transition: color .3s; }
+  h2.section-titre em { color: var(--accent); font-style: normal; transition: color .4s; }
+  .section { padding: 84px 6vw; position: relative; }
+  .section-sur-titre {
+    color: var(--accent); font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+    font-size: 12px; margin-bottom: 10px; transition: color .4s;
+  }
+
+  /* ---------- header ---------- */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; gap: 14px;
+    padding: 6px 16px; background: rgba(15,20,25,.92); backdrop-filter: blur(6px);
+    border-bottom: 2px solid var(--accent); transition: border-color .4s;
+  }
+  .marque { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .marque img { height: 46px; width: auto; max-width: 130px; object-fit: contain; transition: opacity .3s; }
+  .marque span { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gris2); white-space: nowrap; }
   .brandings { display: flex; gap: 8px; margin-left: auto; }
   .logo-btn {
     background: var(--carte); border: 2px solid transparent; border-radius: 8px;
@@ -28,14 +45,34 @@
     align-items: center; gap: 2px; transition: border-color .2s, transform .1s;
   }
   .logo-btn:active { transform: scale(.97); }
-  .logo-btn img { height: 34px; width: auto; max-width: 90px; object-fit: contain;
+  .logo-btn img { height: 30px; width: auto; max-width: 84px; object-fit: contain;
     filter: grayscale(1) brightness(.75); opacity: .5; transition: filter .25s, opacity .25s; }
-  .logo-btn .lib { font-size: 9px; letter-spacing: .5px; color: var(--gris); opacity: .5; text-transform: uppercase; }
+  .logo-btn .lib { font-size: 8.5px; letter-spacing: .5px; color: var(--gris); opacity: .5; text-transform: uppercase; }
   .logo-btn.actif { border-color: var(--laccent, var(--accent)); }
   .logo-btn.actif img { filter: none; opacity: 1; }
   .logo-btn.actif .lib { opacity: 1; color: var(--laccent, var(--accent)); font-weight: 700; }
 
-  /* ------- viewer PLEIN ECRAN (le panneau flotte par-dessus) ------- */
+  /* ---------- volet de transition de branding ---------- */
+  #volet {
+    position: fixed; inset: 0; z-index: 200; background: var(--accent);
+    transform: translateX(-102%); pointer-events: none;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #volet img { height: 130px; opacity: 0; transition: opacity .18s; }
+  #volet.entre { transition: transform .45s cubic-bezier(.7,0,.3,1); transform: translateX(0); }
+  #volet.entre img { opacity: 1; }
+  #volet.sort { transition: transform .45s cubic-bezier(.7,0,.3,1); transform: translateX(102%); }
+
+  /* ---------- héro : visite 3D ---------- */
+  #hero { height: 100vh; display: flex; flex-direction: column; padding-top: 60px; }
+  .slogan-barre { text-align: center; padding: 12px 16px 10px; }
+  .slogan-barre .slogan {
+    font-size: clamp(22px, 3.6vw, 40px); font-weight: 900; letter-spacing: 2px;
+    color: var(--accent); text-transform: uppercase; transition: color .4s;
+    animation: braise 2.6s ease-in-out infinite alternate;
+  }
+  @keyframes braise { from { text-shadow: 0 0 8px rgba(255,90,0,.0); } to { text-shadow: 0 0 22px color-mix(in srgb, var(--accent) 65%, transparent); } }
+  .slogan-barre .tagline { font-size: 12px; color: var(--gris2); letter-spacing: 3px; text-transform: uppercase; margin-top: 2px; }
   .viewer { flex: 1; position: relative; background: #000; }
   .viewer iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
   #chargement {
@@ -46,83 +83,351 @@
   #chargement.cache { opacity: 0; pointer-events: none; }
   .brasier { font-size: 42px; animation: pulse 1.2s infinite alternate; }
   @keyframes pulse { from { transform: scale(1); opacity: .7; } to { transform: scale(1.15); opacity: 1; } }
-
-  /* ------- panneau d'etape : bandeau flottant compact ------- */
   .panneau {
     position: absolute; left: 14px; bottom: 14px; z-index: 6;
-    max-width: min(600px, calc(100% - 28px));
-    background: rgba(15, 20, 25, .90); backdrop-filter: blur(4px);
+    max-width: min(560px, calc(100% - 28px));
+    background: rgba(15,20,25,.90); backdrop-filter: blur(4px);
     border: 1px solid var(--accent); border-radius: 12px;
     padding: 10px 14px 12px; display: flex; flex-direction: column; gap: 6px;
-    transition: border-color .3s;
+    transition: border-color .4s;
   }
   .etape-ligne { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .etape-num {
     background: var(--accent); color: #fff; font-weight: 800; border-radius: 999px;
     min-width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center;
-    font-size: 13px; transition: background .3s;
+    font-size: 13px; transition: background .4s;
   }
-  .etape-titre { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
-  .etape-desc { font-size: 12.5px; line-height: 1.45; color: var(--gris); }
+  .etape-titre { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+  .etape-desc { font-size: 12px; line-height: 1.45; color: var(--gris); }
   .controles { display: flex; align-items: center; gap: 10px; margin-top: 2px; flex-wrap: wrap; }
-  button {
-    font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
-    border: 0; border-radius: 8px; padding: 7px 16px; transition: transform .1s, opacity .2s, background .3s;
+  button { font-family: inherit; cursor: pointer; border: 0; }
+  .controles button {
+    font-size: 13px; font-weight: 700; border-radius: 8px; padding: 7px 16px;
+    transition: transform .1s, opacity .2s, background .4s;
   }
-  button:active { transform: scale(.97); }
+  .controles button:active { transform: scale(.97); }
   #btn-suivant { background: var(--accent); color: #fff; }
   #btn-precedent { background: transparent; color: var(--gris); border: 1px solid #4a535c; }
-  button:disabled { opacity: .35; cursor: default; }
+  .controles button:disabled { opacity: .35; cursor: default; }
   .points { display: flex; gap: 6px; margin-left: auto; }
-  .point { width: 10px; height: 10px; border-radius: 50%; background: #3a4149; cursor: pointer; border: 0; padding: 0; transition: background .2s, transform .2s; }
+  .point { width: 10px; height: 10px; border-radius: 50%; background: #3a4149; cursor: pointer; padding: 0; transition: background .2s, transform .2s; }
   .point.actif { background: var(--accent); transform: scale(1.3); }
 
-  @media (max-width: 700px) {
-    header { flex-wrap: wrap; gap: 8px; }
-    .brandings { margin-left: 0; width: 100%; justify-content: center; }
-    .logo-btn img { height: 30px; }
-    .panneau { left: 8px; right: 8px; bottom: 8px; max-width: none; }
-    .etape-titre { font-size: 13px; }
-    .etape-desc { font-size: 11.5px; }
+  /* ---------- reveals + parallaxe ---------- */
+  [data-reveal] { opacity: 0; transform: translateY(34px); transition: opacity .7s ease, transform .7s ease; }
+  [data-reveal].visible { opacity: 1; transform: none; }
+  .parallax { overflow: hidden; border-radius: 14px; }
+  .parallax img { transform: translateY(var(--py, 0px)) scale(1.12); transition: transform .1s linear; will-change: transform; }
+
+  /* ---------- concept ---------- */
+  #concept { background: linear-gradient(180deg, var(--charbon), var(--accent-fonce)); }
+  .concept-grille { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; margin-top: 34px; }
+  .concept-texte p { color: var(--gris); line-height: 1.75; font-size: 15px; margin-bottom: 16px; }
+  .concept-texte p strong { color: #fff; }
+  .motscles { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .motcle {
+    border: 1px solid var(--accent); color: var(--accent); border-radius: 999px;
+    font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 7px 16px; transition: color .4s, border-color .4s;
+  }
+
+  /* ---------- galerie ---------- */
+  .galerie-grille { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: 34px; }
+  .galerie-grille figure { cursor: zoom-in; position: relative; }
+  .galerie-grille .parallax { aspect-ratio: 16/10.5; }
+  .galerie-grille img { width: 100%; height: 100%; object-fit: cover; }
+  .galerie-grille figcaption { font-size: 13px; color: var(--gris2); margin-top: 10px; }
+  .galerie-grille figcaption::before { content: "— "; color: var(--accent); }
+
+  /* ---------- fresques plein écran ---------- */
+  .fresque { min-height: 92vh; display: flex; align-items: flex-end; position: relative; overflow: hidden; }
+  .fresque .fond { position: absolute; inset: -12% 0; background-size: cover; background-position: center; will-change: transform; }
+  .fresque .voile { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15,20,25,.55), transparent 40%, rgba(15,20,25,.82)); }
+  .fresque .legende { position: relative; z-index: 2; padding: 40px 6vw 52px; }
+  .fresque .legende h3 { font-size: clamp(20px, 3vw, 32px); font-weight: 900; text-transform: uppercase; }
+  .fresque .legende p { color: var(--gris); margin-top: 6px; font-size: 14px; }
+
+  /* ---------- menu ---------- */
+  #menu { background: var(--accent-fonce); }
+  .menu-grille { display: grid; grid-template-columns: 1.55fr 1fr; gap: 26px; margin-top: 34px; align-items: start; }
+  .menu-grille img { border-radius: 12px; cursor: zoom-in; box-shadow: 0 18px 50px rgba(0,0,0,.5); }
+
+  /* ---------- pubs (carrousel vertical) ---------- */
+  .pub-grille { display: grid; grid-template-columns: .95fr 1.05fr; gap: 48px; align-items: center; margin-top: 10px; }
+  .pub-texte p { color: var(--gris); line-height: 1.7; font-size: 15px; margin-top: 16px; }
+  .carrousel { position: relative; max-width: 380px; margin: 0 auto; }
+  .carrousel .cadre {
+    aspect-ratio: 9/16; border-radius: 18px; overflow: hidden; background: #000;
+    border: 1px solid var(--accent); box-shadow: 0 24px 70px rgba(0,0,0,.55);
+    position: relative; transition: border-color .4s;
+  }
+  .carrousel video { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
+  .carrousel .son {
+    position: absolute; right: 10px; bottom: 10px; z-index: 3;
+    background: rgba(15,20,25,.75); color: #fff; border-radius: 999px;
+    font-size: 15px; width: 38px; height: 38px;
+  }
+  .carrousel .fleche {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+    width: 42px; height: 42px; border-radius: 50%; font-size: 18px; font-weight: 800;
+    background: var(--accent); color: #fff; transition: background .4s;
+  }
+  .carrousel .fleche:active { transform: translateY(-50%) scale(.94); }
+  #pub-prec { left: -21px; } #pub-suiv { right: -21px; }
+  .pub-points { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
+  .pub-points .point { width: 10px; height: 10px; }
+
+  /* ---------- comparatif ---------- */
+  #comparatif { background: linear-gradient(180deg, var(--charbon), #0a0e12); }
+  .compare-grille { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 34px; }
+  .compare-carte {
+    background: var(--carte); border: 2px solid transparent; border-radius: 16px;
+    padding: 22px 18px; display: flex; flex-direction: column; align-items: center; gap: 14px;
+    transition: border-color .3s, transform .3s;
+  }
+  .compare-carte:hover { transform: translateY(-6px); }
+  .compare-carte.actif { border-color: var(--caccent); }
+  .compare-carte > img.logo { height: 74px; object-fit: contain; }
+  .compare-carte .charte-mini { border-radius: 8px; max-height: 150px; object-fit: cover; width: 100%; }
+  .compare-carte .mots { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+  .compare-carte .mots span {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    border: 1px solid var(--caccent); color: var(--caccent); border-radius: 999px; padding: 4px 10px;
+  }
+  .compare-carte .explorer {
+    background: var(--caccent); color: #fff; font-weight: 800; font-size: 13px;
+    border-radius: 9px; padding: 10px 18px; margin-top: auto;
+  }
+
+  footer { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 42px 16px 48px; border-top: 1px solid #232b33; }
+  footer img { height: 52px; object-fit: contain; }
+  footer p { color: var(--gris2); font-size: 12px; letter-spacing: 1px; }
+
+  #btn-3d {
+    position: fixed; right: 16px; bottom: 16px; z-index: 60;
+    background: var(--accent); color: #fff; font-weight: 800; font-size: 13px;
+    border-radius: 999px; padding: 12px 18px; box-shadow: 0 10px 30px rgba(0,0,0,.45);
+    opacity: 0; pointer-events: none; transition: opacity .3s, background .4s;
+  }
+  #btn-3d.visible { opacity: 1; pointer-events: auto; }
+
+  dialog#lightbox { border: 0; background: rgba(10,13,16,.94); max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
+  dialog#lightbox[open] { display: flex; }
+  dialog#lightbox img { max-width: 94vw; max-height: 92vh; object-fit: contain; border-radius: 8px; }
+  dialog#lightbox button { position: fixed; top: 14px; right: 18px; font-size: 26px; background: transparent; color: #fff; }
+
+  @media (max-width: 860px) {
+    .concept-grille, .pub-grille, .menu-grille { grid-template-columns: 1fr; gap: 26px; }
+    .galerie-grille { grid-template-columns: 1fr; }
+    .compare-grille { grid-template-columns: 1fr; }
+    #hero { height: 100svh; }
+    .marque span { display: none; }
+    .panneau { left: 8px; right: 8px; max-width: none; }
+    #pub-prec { left: 6px; } #pub-suiv { right: 6px; }
   }
 </style>
 </head>
 <body>
-<div class="layout">
-  <header>
-    <h1>La French Touch <span>— Visite guidée</span></h1>
-    <nav class="brandings" id="brandings" aria-label="Choix du branding"></nav>
-  </header>
-  <div class="viewer" id="viewer-box">
-    <iframe id="api-frame" title="La French Touch — maquette 3D" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
-    <div id="chargement"><span class="brasier">🔥</span><span id="chargement-txt">Chargement du restaurant 3D…</span></div>
-    <div class="panneau">
-      <div class="etape-ligne">
-        <span class="etape-num" id="etape-num">1</span>
-        <span class="etape-titre" id="etape-titre"></span>
-      </div>
-      <p class="etape-desc" id="etape-desc"></p>
-      <div class="controles">
-        <button id="btn-precedent">← Précédent</button>
-        <button id="btn-suivant">Suivant →</button>
-        <div class="points" id="points"></div>
+
+<div id="volet"><img id="volet-logo" src="logo-br1.png" alt=""></div>
+
+<header>
+  <div class="marque">
+    <img id="logo-actif" src="logo-br1.png" alt="Logo du branding actif">
+    <span>Visite guidée</span>
+  </div>
+  <nav class="brandings" id="brandings" aria-label="Choix du branding"></nav>
+</header>
+
+<main>
+  <!-- 1 · HÉRO : VISITE 3D -->
+  <section id="hero">
+    <div class="slogan-barre">
+      <div class="slogan" id="slogan">DU FEU. DU GOÛT.</div>
+      <div class="tagline" id="tagline">Poulet braisé · La French Touch</div>
+    </div>
+    <div class="viewer">
+      <iframe id="api-frame" title="La French Touch — maquette 3D" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
+      <div id="chargement"><span class="brasier">🔥</span><span id="chargement-txt">Chargement du restaurant 3D…</span></div>
+      <div class="panneau">
+        <div class="etape-ligne">
+          <span class="etape-num" id="etape-num">1</span>
+          <span class="etape-titre" id="etape-titre"></span>
+        </div>
+        <p class="etape-desc" id="etape-desc"></p>
+        <div class="controles">
+          <button id="btn-precedent">← Précédent</button>
+          <button id="btn-suivant">Suivant →</button>
+          <div class="points" id="points"></div>
+        </div>
       </div>
     </div>
+  </section>
+
+  <!-- 2 · CONCEPT -->
+  <section id="concept" class="section">
+    <div data-reveal>
+      <div class="section-sur-titre">Le projet</div>
+      <h2 class="section-titre" id="concept-titre">Un concept, <em>trois identités</em></h2>
+    </div>
+    <div class="concept-grille">
+      <div class="concept-texte" data-reveal>
+        <p id="concept-p1"></p>
+        <p id="concept-p2"></p>
+        <p id="concept-p3"></p>
+        <div class="motscles" id="motscles"></div>
+      </div>
+      <div class="parallax" data-reveal><img id="charte-img" src="img/br1/charte.jpg" alt="Charte graphique du branding"></div>
+    </div>
+  </section>
+
+  <!-- 3 · GALERIE -->
+  <section id="galerie" class="section">
+    <div data-reveal>
+      <div class="section-sur-titre">Projection</div>
+      <h2 class="section-titre">Le restaurant <em>en images</em></h2>
+    </div>
+    <div class="galerie-grille" id="galerie-grille"></div>
+  </section>
+
+  <!-- 4 · FRESQUES -->
+  <div id="fresques">
+    <section class="fresque" id="fresque1">
+      <div class="fond" id="fresque1-fond"></div><div class="voile"></div>
+      <div class="legende" data-reveal><h3>La fresque du mur gauche</h3><p id="fresque1-p"></p></div>
+    </section>
+    <section class="fresque" id="fresque2">
+      <div class="fond" id="fresque2-fond"></div><div class="voile"></div>
+      <div class="legende" data-reveal><h3>La fresque du mur droit</h3><p id="fresque2-p"></p></div>
+    </section>
   </div>
-</div>
+
+  <!-- 5 · MENU -->
+  <section id="menu" class="section">
+    <div data-reveal>
+      <div class="section-sur-titre">La carte</div>
+      <h2 class="section-titre">Nos formules, <em>notre carte</em></h2>
+    </div>
+    <div class="menu-grille">
+      <img id="menu-formules" data-reveal src="img/br1/menu-formules.jpg" alt="Les formules" class="zoomable">
+      <img id="menu-carte" data-reveal src="img/br1/menu-carte.jpg" alt="La carte" class="zoomable">
+    </div>
+  </section>
+
+  <!-- 6 · MARKETING / PUBS -->
+  <section id="pub" class="section">
+    <div class="pub-grille">
+      <div class="pub-texte" data-reveal>
+        <div class="section-sur-titre">Marketing</div>
+        <h2 class="section-titre" id="pub-titre">La campagne <em>Menu Famille</em></h2>
+        <p id="pub-p"></p>
+      </div>
+      <div data-reveal>
+        <div class="carrousel">
+          <div class="cadre">
+            <video id="pub-video" playsinline loop muted poster=""></video>
+            <button class="son" id="pub-son" title="Activer le son">🔇</button>
+          </div>
+          <button class="fleche" id="pub-prec">‹</button>
+          <button class="fleche" id="pub-suiv">›</button>
+          <div class="pub-points" id="pub-points"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · COMPARATIF -->
+  <section id="comparatif" class="section">
+    <div data-reveal>
+      <div class="section-sur-titre">Décision</div>
+      <h2 class="section-titre">Trois identités, <em>un choix</em></h2>
+    </div>
+    <div class="compare-grille" id="compare-grille"></div>
+  </section>
+
+  <footer>
+    <img id="footer-logo" src="logo-br1.png" alt="La French Touch">
+    <p>© La French Touch 2026</p>
+  </footer>
+</main>
+
+<button id="btn-3d">↑ Visite 3D</button>
+<dialog id="lightbox"><img id="lightbox-img" src="" alt=""><button id="lightbox-fermer" title="Fermer">✕</button></dialog>
 
 <script src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"></script>
 <script>
-// Visite guidée multi-brandings — 3 maquettes Sketchfab (même géométrie).
-// ⚠️ ESPACE CAMERA du viewer = repère BLENDER du modèle, z VERTICAL (mesuré par sonde CDP
-// 2026-07-06) : coordonnées ci-dessous = coords Blender verbatim, validées au rendu.
+/* =====================================================================
+   La French Touch — site de présentation multi-brandings.
+   ⚠️ Espace caméra du viewer Sketchfab = repère BLENDER du modèle (z vertical),
+   mesuré par sonde CDP le 2026-07-06. Coordonnées validées au rendu.
+   ===================================================================== */
+
 var BRANDINGS = [
-  { id: "br1", lib: "Branding 1", uid: "3c35bf5e5b2d495a9dba0edcc133c53d", logo: "logo-br1.png", accent: "#E63946" },
-  { id: "br2", lib: "Branding 2", uid: "ed5c28783ebc4c8c83ddba33c388a8c5", logo: "logo-br2.png", accent: "#D78639" },
-  { id: "br3", lib: "Branding 3", uid: "2d3d86e7186049ba81cd302a6653df22", logo: "logo-br3.png", accent: "#FF5A00" }
+  { id: "br1", lib: "Branding 1", uid: "3c35bf5e5b2d495a9dba0edcc133c53d", logo: "logo-br1.png", accent: "#E63946",
+    slogan: "DU FEU. DU GOÛT.", tagline: "Franco-latin · Pollo a la brasa",
+    motscles: ["Solaire", "Convivial", "Street-art"],
+    concept: [
+      "<strong>La French Touch</strong> est un concept de restauration rapide premium dédié au poulet braisé au feu de bois. L'identité franco-latine assume un positionnement solaire et populaire : couleurs chaudes, néons, fresques street-art et clins d'œil au pollo a la brasa.",
+      "L'expérience client repose sur un parcours court et lisible : commande sur bornes tactiles, comptoir rôtisserie ouvert sur la salle, banquettes le long de la baie vitrée et terrasse. Le feu est mis en scène comme cœur du concept.",
+      "Ce branding vise une clientèle jeune et familiale, un ticket moyen maîtrisé et une très forte identité visuelle partageable sur les réseaux — chaque mur est pensé comme un décor à photographier."
+    ],
+    legendes: [
+      "La salle : rôtisserie au feu de bois, bornes et fresque néon",
+      "Le comptoir rétroéclairé, la ligne de commande et la terrasse",
+      "La fresque signature : coucher de soleil, palmiers et flammes",
+      "Le mur des valeurs : authenticité, partage, convivialité"
+    ],
+    fresques: [
+      "Coucher de soleil et palmiers : l'énergie franco-latine posée sur le mur gauche de la salle.",
+      "La planche de marque : logo, valeurs et typographies exposés côté droit."
+    ],
+    pubTitre: "La campagne <em>Menu Famille</em>",
+    pubTexte: "Pour ce branding convivial, la formule mise en avant est le MENU FAMILLE : poulet entier braisé à partager, frites, riz parfumé et quatre sauces maison. Quatre déclinaisons publicitaires au format vertical, prêtes pour les réseaux sociaux et les stories." },
+
+  { id: "br2", lib: "Branding 2", uid: "ed5c28783ebc4c8c83ddba33c388a8c5", logo: "logo-br2.png", accent: "#D78639",
+    slogan: "LE GOÛT DE LA BRAISE", tagline: "Premium · Cuisson au feu de bois",
+    motscles: ["Premium", "Artisanal", "Chaleureux"],
+    concept: [
+      "<strong>La French Touch</strong> version premium : une identité élégante construite autour du bleu marine, du noyer, de l'ardoise et du laiton. Le poulet braisé y est traité comme un produit d'artisan, cuisson au feu de bois en vitrine.",
+      "Le parcours client garde l'efficacité du fast-casual — bornes, comptoir ouvert, service rapide — mais l'habillage monte en gamme : enseigne ronde rétro-éclairée, suspensions cuivre, banquettes en cuir orange brûlé.",
+      "Ce branding cible une clientèle urbaine prête à payer une qualité perçue supérieure, et crédibilise le concept auprès de partenaires et d'investisseurs : c'est l'identité la plus « restaurant » des trois."
+    ],
+    legendes: [
+      "La devanture d'angle : enseigne ronde et néon « cuisson au feu de bois »",
+      "La salle : banquettes orange brûlé, noyer et rôtisserie ouverte",
+      "Le logo rétro-éclairé, entre noyer et ardoise",
+      "Le corner photo « Rejoins la broche »"
+    ],
+    fresques: [
+      "Fresque « Rejoins la broche » : l'appel signature côté gauche.",
+      "Logo et couverts sur noyer, encadrés de reliefs laiton, côté droit."
+    ],
+    pubTitre: "La campagne <em>Menu Maxi</em>",
+    pubTexte: "Pour ce branding généreux et premium, la formule mise en avant est le MENU MAXI : un demi-poulet braisé, frites et patatas bravas, deux sauces maison. Quatre déclinaisons publicitaires verticales, calibrées pour les réseaux sociaux." },
+
+  { id: "br3", lib: "Branding 3", uid: "2d3d86e7186049ba81cd302a6653df22", logo: "logo-br3.png", accent: "#FF5A00",
+    slogan: "LE PLAISIR BIEN BRAISÉ", tagline: "Feu & charbon · Braised chicken",
+    motscles: ["Feu", "Brut", "Urbain"],
+    concept: [
+      "<strong>La French Touch</strong> version feu et charbon : murs noirs, brique rouge, bois brûlé et un coq néon qui s'embrase au centre de la salle. L'identité la plus urbaine et la plus tranchée des trois.",
+      "Le restaurant s'organise autour du comptoir en planches de bois vieilli souligné d'un liseré orange feu : rôtisserie apparente, quatre bornes de commande sur le mur de briques, banquettes orange en vitrine.",
+      "Ce branding vise une image forte et différenciante : un lieu qui se reconnaît en une seconde, pensé pour la notoriété locale et les réseaux — jusqu'au photo spot dédié devant la fresque du coq."
+    ],
+    legendes: [
+      "La salle : comptoir ardoise, cuisine ouverte et mezzanine lumineuse",
+      "La devanture brique noire et néon, à la tombée du jour",
+      "Le mur signature : coq néon, plaque laiton et hashtag",
+      "Le photo spot : la fresque du coq en flammes"
+    ],
+    fresques: [
+      "Le coq en flammes et le slogan, peints sur le mur gauche.",
+      "La grande fresque de marque et le panneau MENU, côté droit."
+    ],
+    pubTitre: "La campagne <em>Menu Solo</em>",
+    pubTexte: "Pour ce branding urbain et direct, la formule mise en avant est le MENU SOLO : un quart de poulet braisé, frites maison, sauce au choix et boisson. Quatre déclinaisons publicitaires verticales, format stories, prêtes à diffuser." }
 ];
 
-var CENTRE_MODELE = [5.6, 2.54, 1.5];   // centre bbox (calibration filet)
+var CENTRE_MODELE = [5.6, 2.54, 1.5];
 var offsetViewer = [0, 0, 0];
 
 var ETAPES = [
@@ -166,18 +471,16 @@ var ETAPES = [
 
 var api = null;
 var etapeActive = 0;
-var brandingActif = 2;   // démarre sur Branding 3
-var generation = 0;      // invalide les callbacks d'un viewer remplacé
+var brandingActif = 0;      // démarre sur Branding 1
+var generation = 0;
+var pubActive = 0;
 
-var $num = document.getElementById("etape-num");
-var $titre = document.getElementById("etape-titre");
-var $desc = document.getElementById("etape-desc");
-var $prec = document.getElementById("btn-precedent");
-var $suiv = document.getElementById("btn-suivant");
-var $points = document.getElementById("points");
-var $brandings = document.getElementById("brandings");
-var $charge = document.getElementById("chargement");
+var $ = function (id) { return document.getElementById(id); };
+var $num = $("etape-num"), $titre = $("etape-titre"), $desc = $("etape-desc");
+var $prec = $("btn-precedent"), $suiv = $("btn-suivant");
+var $points = $("points"), $brandings = $("brandings"), $charge = $("chargement");
 
+/* ---------- construction des éléments répétés ---------- */
 BRANDINGS.forEach(function (b, i) {
   var btn = document.createElement("button");
   btn.className = "logo-btn"; btn.style.setProperty("--laccent", b.accent);
@@ -193,10 +496,73 @@ ETAPES.forEach(function (_, i) {
   $points.appendChild(p);
 });
 
+for (var gi = 0; gi < 4; gi++) {
+  var fig = document.createElement("figure");
+  fig.innerHTML = '<div class="parallax" data-reveal><img alt=""></div><figcaption></figcaption>';
+  (function (idx, f) {
+    f.addEventListener("click", function () { ouvrirLightbox(f.querySelector("img").src); });
+  })(gi, fig);
+  $("galerie-grille").appendChild(fig);
+}
+
+for (var pi = 0; pi < 4; pi++) {
+  var pt = document.createElement("button");
+  pt.className = "point"; pt.title = "Pub " + (pi + 1);
+  (function (idx) { pt.addEventListener("click", function () { allerPub(idx); }); })(pi);
+  $("pub-points").appendChild(pt);
+}
+
+BRANDINGS.forEach(function (b, i) {
+  var carte = document.createElement("div");
+  carte.className = "compare-carte"; carte.style.setProperty("--caccent", b.accent);
+  carte.setAttribute("data-reveal", "");
+  carte.innerHTML =
+    '<img class="logo" src="' + b.logo + '" alt="' + b.lib + '">' +
+    '<img class="charte-mini" src="img/' + b.id + '/charte.jpg" alt="Charte ' + b.lib + '">' +
+    '<div class="mots">' + b.motscles.map(function (m) { return "<span>" + m + "</span>"; }).join("") + "</div>" +
+    '<button class="explorer">Explorer ce branding</button>';
+  carte.querySelector(".explorer").addEventListener("click", function () {
+    choisirBranding(i);
+    document.getElementById("hero").scrollIntoView({ behavior: "smooth" });
+  });
+  $("compare-grille").appendChild(carte);
+});
+
+/* ---------- contenu par branding ---------- */
+function majContenu() {
+  var b = BRANDINGS[brandingActif];
+  document.documentElement.style.setProperty("--accent", b.accent);
+  $("logo-actif").src = b.logo;
+  $("volet-logo").src = b.logo;
+  $("footer-logo").src = b.logo;
+  $("slogan").textContent = b.slogan;
+  $("tagline").textContent = b.tagline;
+  $("concept-p1").innerHTML = b.concept[0];
+  $("concept-p2").innerHTML = b.concept[1];
+  $("concept-p3").innerHTML = b.concept[2];
+  $("charte-img").src = "img/" + b.id + "/charte.jpg";
+  $("motscles").innerHTML = b.motscles.map(function (m) { return '<span class="motcle">' + m + "</span>"; }).join("");
+  var figs = document.querySelectorAll("#galerie-grille figure");
+  Array.prototype.forEach.call(figs, function (f, i) {
+    f.querySelector("img").src = "img/" + b.id + "/mockup" + (i + 1) + ".jpg";
+    f.querySelector("figcaption").textContent = b.legendes[i];
+  });
+  $("fresque1-fond").style.backgroundImage = "url('img/" + b.id + "/mur1.jpg')";
+  $("fresque2-fond").style.backgroundImage = "url('img/" + b.id + "/mur2.jpg')";
+  $("fresque1-p").textContent = b.fresques[0];
+  $("fresque2-p").textContent = b.fresques[1];
+  $("menu-formules").src = "img/" + b.id + "/menu-formules.jpg";
+  $("menu-carte").src = "img/" + b.id + "/menu-carte.jpg";
+  $("pub-titre").innerHTML = b.pubTitre;
+  $("pub-p").textContent = b.pubTexte;
+  pubActive = 0;
+  majPub();
+  majPanneau();
+}
+
 function majPanneau() {
   var e = ETAPES[etapeActive];
   var b = BRANDINGS[brandingActif];
-  document.documentElement.style.setProperty("--accent", b.accent);  // le SITE prend la couleur du branding
   $num.textContent = etapeActive + 1;
   $titre.textContent = e.titre;
   $desc.textContent = e.desc[b.id] || e.desc.generique;
@@ -208,11 +574,13 @@ function majPanneau() {
   Array.prototype.forEach.call($brandings.children, function (btn, i) {
     btn.classList.toggle("actif", i === brandingActif);
   });
+  Array.prototype.forEach.call(document.querySelectorAll(".compare-carte"), function (c, i) {
+    c.classList.toggle("actif", i === brandingActif);
+  });
 }
 
-function decale(p) {
-  return [p[0] + offsetViewer[0], p[1] + offsetViewer[1], p[2] + offsetViewer[2]];
-}
+/* ---------- visite 3D ---------- */
+function decale(p) { return [p[0] + offsetViewer[0], p[1] + offsetViewer[1], p[2] + offsetViewer[2]]; }
 
 function allerEtape(i, duree) {
   etapeActive = (i + ETAPES.length) % ETAPES.length;
@@ -226,21 +594,14 @@ function allerEtape(i, duree) {
 $prec.addEventListener("click", function () { allerEtape(etapeActive - 1); });
 $suiv.addEventListener("click", function () { allerEtape(etapeActive + 1); });
 
-function choisirBranding(i) {
-  if (i === brandingActif) return;
-  brandingActif = i;
-  majPanneau();
-  chargerViewer();
-}
-
 function chargerViewer() {
   generation += 1;
   var gen = generation;
   api = null;
   var b = BRANDINGS[brandingActif];
   $charge.classList.remove("cache");
-  document.getElementById("chargement-txt").textContent = "Chargement — " + b.lib + "…";
-  var vieux = document.getElementById("api-frame");
+  $("chargement-txt").textContent = "Chargement — " + b.lib + "…";
+  var vieux = $("api-frame");
   var neuf = document.createElement("iframe");
   neuf.id = "api-frame"; neuf.title = "La French Touch — maquette 3D";
   neuf.setAttribute("allow", "autoplay; fullscreen; xr-spatial-tracking");
@@ -275,8 +636,112 @@ function chargerViewer() {
   });
 }
 
-majPanneau();
+/* ---------- bascule de branding avec volet ---------- */
+var voletOccupe = false;
+function choisirBranding(i) {
+  if (i === brandingActif || voletOccupe) return;
+  voletOccupe = true;
+  var volet = $("volet");
+  $("volet-logo").src = BRANDINGS[i].logo;
+  volet.style.background = BRANDINGS[i].accent;
+  volet.classList.remove("sort");
+  volet.classList.add("entre");
+  setTimeout(function () {
+    brandingActif = i;
+    majContenu();
+    chargerViewer();
+    volet.classList.remove("entre");
+    volet.classList.add("sort");
+    setTimeout(function () { volet.classList.remove("sort"); voletOccupe = false; }, 500);
+  }, 520);
+}
+
+/* ---------- carrousel pubs (chargement paresseux, autoplay muet) ---------- */
+var $video = $("pub-video");
+var sonActif = false;
+function majPub() {
+  var b = BRANDINGS[brandingActif];
+  $video.pause();
+  $video.poster = "pub/" + b.id + "/poster" + (pubActive + 1) + ".jpg";
+  $video.src = "pub/" + b.id + "/pub" + (pubActive + 1) + ".mp4";
+  $video.muted = !sonActif;
+  Array.prototype.forEach.call($("pub-points").children, function (p, i) {
+    p.classList.toggle("actif", i === pubActive);
+  });
+  if (pubVisible) { $video.play().catch(function () {}); }
+}
+function allerPub(i) { pubActive = (i + 4) % 4; majPub(); }
+$("pub-prec").addEventListener("click", function () { allerPub(pubActive - 1); });
+$("pub-suiv").addEventListener("click", function () { allerPub(pubActive + 1); });
+$("pub-son").addEventListener("click", function () {
+  sonActif = !sonActif;
+  $video.muted = !sonActif;
+  $("pub-son").textContent = sonActif ? "🔊" : "🔇";
+});
+$video.addEventListener("click", function () { $("pub-son").click(); });
+
+var pubVisible = false;
+new IntersectionObserver(function (entrees) {
+  entrees.forEach(function (e) {
+    pubVisible = e.isIntersecting;
+    if (pubVisible) { $video.play().catch(function () {}); } else { $video.pause(); }
+  });
+}, { threshold: 0.35 }).observe($("pub"));
+
+/* ---------- lightbox ---------- */
+function ouvrirLightbox(src) {
+  $("lightbox-img").src = src;
+  $("lightbox").showModal();
+}
+Array.prototype.forEach.call(document.querySelectorAll("img.zoomable"), function (im) {
+  im.addEventListener("click", function () { ouvrirLightbox(im.src); });
+});
+$("lightbox-fermer").addEventListener("click", function () { $("lightbox").close(); });
+$("lightbox").addEventListener("click", function (ev) { if (ev.target === $("lightbox")) $("lightbox").close(); });
+
+/* ---------- reveals ---------- */
+var revealObs = new IntersectionObserver(function (entrees) {
+  entrees.forEach(function (e) {
+    if (e.isIntersecting) { e.target.classList.add("visible"); revealObs.unobserve(e.target); }
+  });
+}, { threshold: 0.15 });
+Array.prototype.forEach.call(document.querySelectorAll("[data-reveal]"), function (el) { revealObs.observe(el); });
+
+/* ---------- parallaxe (rAF) ---------- */
+var parallaxEls = document.querySelectorAll(".parallax img");
+var fresqueEls = document.querySelectorAll(".fresque .fond");
+var ticking = false;
+function surScroll() {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(function () {
+    var vh = window.innerHeight;
+    Array.prototype.forEach.call(parallaxEls, function (im) {
+      var r = im.parentElement.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) { ticking = false; return; }
+      var d = (r.top + r.height / 2 - vh / 2) / vh;
+      im.style.setProperty("--py", (d * -26) + "px");
+    });
+    Array.prototype.forEach.call(fresqueEls, function (f) {
+      var r = f.parentElement.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
+      var d = (r.top + r.height / 2 - vh / 2) / vh;
+      f.style.transform = "translateY(" + (d * 60) + "px)";
+    });
+    $("btn-3d").classList.toggle("visible", window.scrollY > vh * 0.8);
+    ticking = false;
+  });
+}
+window.addEventListener("scroll", surScroll, { passive: true });
+
+$("btn-3d").addEventListener("click", function () {
+  document.getElementById("hero").scrollIntoView({ behavior: "smooth" });
+});
+
+/* ---------- démarrage ---------- */
+majContenu();
 chargerViewer();
+surScroll();
 </script>
 </body>
 </html>
