@@ -247,7 +247,7 @@
 <header>
   <div class="marque">
     <img id="logo-actif" src="logo-br1.png" alt="Logo du branding actif">
-    <span>Visite guidée</span>
+    <span>Le projet</span>
   </div>
   <nav class="menu-site" aria-label="Pages du projet">
     <a href="todo.html">Todo liste</a>
@@ -686,6 +686,7 @@ function choisirBranding(i) {
   setTimeout(function () {
     brandingActif = i;
     etapeActive = 0;           /* nouveau branding = la visite repart à l'étape 1 */
+    try { localStorage.setItem("lft-branding", BRANDINGS[i].id); } catch (e) {}
     majContenu();
     chargerViewer();
     volet.classList.remove("entre");
@@ -781,6 +782,16 @@ function ajusterHero() {
   $("hero").style.paddingTop = (document.querySelector("header").offsetHeight + 8) + "px";
 }
 window.addEventListener("resize", ajusterHero);
+/* branding demandé par le hash (#br2 depuis une autre page) ou mémorisé */
+(function () {
+  var demande = (location.hash.match(/^#(br[123])$/) || [])[1];
+  var memo = null;
+  try { memo = demande || localStorage.getItem("lft-branding"); } catch (e) {}
+  for (var i = 0; i < BRANDINGS.length; i++) {
+    if (BRANDINGS[i].id === memo) { brandingActif = i; break; }
+  }
+  try { localStorage.setItem("lft-branding", BRANDINGS[brandingActif].id); } catch (e) {}
+})();
 majContenu();
 chargerViewer();
 surScroll();

@@ -126,15 +126,79 @@ body{
 </style>
 
 <style>
-.menu-site{position:sticky;top:0;z-index:40;display:flex;gap:2px;flex-wrap:wrap;justify-content:center;
-  background:rgba(11,11,11,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:9px 12px}
-.menu-site a{font-family:'Poppins',sans-serif;font-size:11.5px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;
-  color:var(--muted);text-decoration:none;padding:8px 11px;border-radius:8px;transition:color .2s,background .2s}
-.menu-site a:hover{color:var(--creme);background:rgba(255,255,255,.06)}
-.menu-site a.actif{color:#fff;background:var(--rouge)}
-.gauge{top:46px}
+.entete-lft { position:sticky; top:0; }
+
+  .entete-lft { z-index:50; display:flex; align-items:center; flex-wrap:wrap; gap:4px 14px;
+    padding:6px 16px; background:rgba(15,20,25,.93); backdrop-filter:blur(6px);
+    border-bottom:2px solid var(--lft-accent, #E63946); }
+  .entete-lft .marque { display:flex; align-items:center; gap:10px; }
+  .entete-lft .marque a { display:block; }
+  .entete-lft .marque img { height:56px; width:auto; max-width:156px; object-fit:contain; display:block; }
+  .entete-lft .marque span { font-family:'Montserrat','Segoe UI',Arial,sans-serif; font-size:12px; letter-spacing:1.5px;
+    text-transform:uppercase; color:#9aa3ab; white-space:nowrap; }
+  .entete-lft .menu-site { display:flex; gap:2px; flex-wrap:wrap; margin-left:14px; }
+  .entete-lft .menu-site a { font-family:'Montserrat','Segoe UI',Arial,sans-serif; font-size:11.5px; font-weight:700;
+    letter-spacing:1.2px; text-transform:uppercase; color:#9aa3ab; text-decoration:none; padding:8px 10px;
+    border-radius:8px; transition:color .2s, background .2s; }
+  .entete-lft .menu-site a:hover { color:#fff; background:rgba(255,255,255,.06); }
+  .entete-lft .menu-site a.actif { color:#fff; background:var(--lft-accent, #E63946); }
+  .entete-lft .brandings { display:flex; gap:8px; margin-left:auto; }
+  .entete-lft .logo-btn { background:#1b232b; border:2px solid transparent; border-radius:8px; padding:5px 14px;
+    display:flex; flex-direction:column; align-items:center; gap:2px; text-decoration:none; transition:border-color .2s; }
+  .entete-lft .logo-btn img { height:44px; width:auto; max-width:122px; object-fit:contain;
+    filter:grayscale(1) brightness(.75); opacity:.5; transition:filter .25s, opacity .25s; display:block; }
+  .entete-lft .logo-btn .lib { font-family:'Montserrat','Segoe UI',Arial,sans-serif; font-size:10px; letter-spacing:.5px;
+    color:#E6E6E6; opacity:.5; text-transform:uppercase; }
+  .entete-lft .logo-btn:hover img { opacity:.85; }
+  .entete-lft .logo-btn.actif { border-color:var(--lft-accent, #E63946); }
+  .entete-lft .logo-btn.actif img { filter:none; opacity:1; }
+  .entete-lft .logo-btn.actif .lib { opacity:1; color:var(--lft-accent, #E63946); font-weight:700; }
+  @media (max-width:860px) {
+    .entete-lft .marque img { height:44px; }
+    .entete-lft .marque span { display:none; }
+    .entete-lft .logo-btn { padding:4px 10px; }
+    .entete-lft .logo-btn img { height:32px; max-width:92px; }
+    .entete-lft .logo-btn .lib { font-size:8.5px; }
+  }
 </style>
-<nav class="menu-site"><a href="todo.html" class="actif">Todo liste</a><a href="index.html">Visite 3D</a><a href="business.html">Business</a><a href="statuts.html">Statuts</a><a href="sourcing.html">Sourcing</a></nav>
+<header class="entete-lft">
+  <div class="marque">
+    <a href="index.html" title="Accueil — visite 3D"><img id="lft-logo" src="logo-br1.png" alt="La French Touch"></a>
+    <span>Le projet</span>
+  </div>
+  <nav class="menu-site"><a href="todo.html" class="actif">Todo liste</a><a href="index.html">Visite 3D</a><a href="business.html">Business</a><a href="statuts.html">Statuts</a><a href="sourcing.html">Sourcing</a></nav>
+  <nav class="brandings" aria-label="Choix du branding">
+    <a class="logo-btn" data-br="br1" href="index.html#br1"><img src="logo-br1.png" alt="Branding 1"><span class="lib">Branding 1</span></a>
+    <a class="logo-btn" data-br="br2" href="index.html#br2"><img src="logo-br2.png" alt="Branding 2"><span class="lib">Branding 2</span></a>
+    <a class="logo-btn" data-br="br3" href="index.html#br3"><img src="logo-br3.png" alt="Branding 3"><span class="lib">Branding 3</span></a>
+  </nav>
+</header>
+<script>
+
+(function () {
+  var accents = { br1: '#E63946', br2: '#D78639', br3: '#FF5A00' };
+  var br = localStorage.getItem('lft-branding');
+  if (!accents[br]) br = 'br1';
+  document.documentElement.style.setProperty('--lft-accent', accents[br]);
+  document.documentElement.style.setProperty('--accent', accents[br]);
+  var logo = document.getElementById('lft-logo');
+  if (logo) logo.src = 'logo-' + br + '.png';
+  Array.prototype.forEach.call(document.querySelectorAll('.entete-lft .logo-btn'), function (b) {
+    b.classList.toggle('actif', b.getAttribute('data-br') === br);
+  });
+})();
+/* la jauge sticky de la feuille de route se cale sous le header commun */
+(function () {
+  function caler() {
+    var g = document.querySelector('.gauge');
+    var h = document.querySelector('.entete-lft');
+    if (g && h) g.style.top = h.offsetHeight + 'px';
+  }
+  window.addEventListener('resize', caler);
+  window.addEventListener('DOMContentLoaded', caler);
+  caler();
+})();
+</script>
 
 
 <div class="hero">
