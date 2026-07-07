@@ -302,12 +302,12 @@
   <div id="fresques">
     <section class="fresque" id="fresque1">
       <div class="fond" id="fresque1-fond"></div><div class="voile"></div>
-      <img class="visuel zoomable" id="fresque1-img" src="img/br1/mur1.jpg" alt="La fresque du mur gauche">
+      <img class="visuel zoomable" id="fresque1-img" src="img/br1/mockup3.jpg" alt="La fresque du mur gauche">
       <div class="legende" data-reveal><h3>La fresque du mur gauche</h3><p id="fresque1-p"></p></div>
     </section>
     <section class="fresque" id="fresque2">
       <div class="fond" id="fresque2-fond"></div><div class="voile"></div>
-      <img class="visuel zoomable" id="fresque2-img" src="img/br1/mur2.jpg" alt="La fresque du mur droit">
+      <img class="visuel zoomable" id="fresque2-img" src="img/br1/mockup4.jpg" alt="La fresque du mur droit">
       <div class="legende" data-reveal><h3>La fresque du mur droit</h3><p id="fresque2-p"></p></div>
     </section>
   </div>
@@ -391,6 +391,7 @@ var BRANDINGS = [
       "Coucher de soleil et palmiers : l'énergie franco-latine posée sur le mur gauche de la salle.",
       "La planche de marque : logo, valeurs et typographies exposés côté droit."
     ],
+    fresqueImgs: ["mockup3.jpg", "mockup4.jpg"],
     pubTitre: "La campagne <em>Menu Famille</em>",
     pubTexte: "Pour ce branding convivial, la formule mise en avant est le MENU FAMILLE : poulet entier braisé à partager, frites, riz parfumé et quatre sauces maison. Quatre déclinaisons publicitaires au format vertical, prêtes pour les réseaux sociaux et les stories." },
 
@@ -412,6 +413,7 @@ var BRANDINGS = [
       "Fresque « Rejoins la broche » : l'appel signature côté gauche.",
       "Logo et couverts sur noyer, encadrés de reliefs laiton, côté droit."
     ],
+    fresqueImgs: ["mockup4.jpg", "mockup3.jpg"],
     pubTitre: "La campagne <em>Menu Maxi</em>",
     pubTexte: "Pour ce branding généreux et premium, la formule mise en avant est le MENU MAXI : un demi-poulet braisé, frites et patatas bravas, deux sauces maison. Quatre déclinaisons publicitaires verticales, calibrées pour les réseaux sociaux." },
 
@@ -433,6 +435,7 @@ var BRANDINGS = [
       "Le coq en flammes et le slogan, peints sur le mur gauche.",
       "La grande fresque de marque et le panneau MENU, côté droit."
     ],
+    fresqueImgs: ["mockup3.jpg", "mockup4.jpg"],
     pubTitre: "La campagne <em>Menu Solo</em>",
     pubTexte: "Pour ce branding urbain et direct, la formule mise en avant est le MENU SOLO : un quart de poulet braisé, frites maison, sauce au choix et boisson. Quatre déclinaisons publicitaires verticales, format stories, prêtes à diffuser." }
 ];
@@ -557,10 +560,11 @@ function majContenu() {
     f.querySelector("img").src = "img/" + b.id + "/mockup" + (i + 1) + ".jpg";
     f.querySelector("figcaption").textContent = b.legendes[i];
   });
-  $("fresque1-fond").style.backgroundImage = "url('img/" + b.id + "/mur1.jpg')";
-  $("fresque2-fond").style.backgroundImage = "url('img/" + b.id + "/mur2.jpg')";
-  $("fresque1-img").src = "img/" + b.id + "/mur1.jpg";
-  $("fresque2-img").src = "img/" + b.id + "/mur2.jpg";
+  /* fresques = les murs EN SITUATION (mockups), pas les artworks à plat */
+  $("fresque1-fond").style.backgroundImage = "url('img/" + b.id + "/" + b.fresqueImgs[0] + "')";
+  $("fresque2-fond").style.backgroundImage = "url('img/" + b.id + "/" + b.fresqueImgs[1] + "')";
+  $("fresque1-img").src = "img/" + b.id + "/" + b.fresqueImgs[0];
+  $("fresque2-img").src = "img/" + b.id + "/" + b.fresqueImgs[1];
   $("fresque1-p").textContent = b.fresques[0];
   $("fresque2-p").textContent = b.fresques[1];
   $("menu-formules").src = "img/" + b.id + "/menu-formules.jpg";
