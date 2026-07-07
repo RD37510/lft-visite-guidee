@@ -606,7 +606,8 @@ function allerEtape(i, duree) {
 $prec.addEventListener("click", function () { allerEtape(etapeActive - 1); });
 $suiv.addEventListener("click", function () { allerEtape(etapeActive + 1); });
 
-function chargerViewer() {
+function chargerViewer(tentative) {
+  tentative = tentative || 0;
   generation += 1;
   var gen = generation;
   api = null;
@@ -645,6 +646,12 @@ function chargerViewer() {
     },
     error: function () {
       if (gen !== generation) return;
+      /* le GPU peut refuser un 2e contexte WebGL juste apres la destruction de
+         l'ancienne iframe : on retente avant de declarer l'echec */
+      if (tentative < 2) {
+        setTimeout(function () { if (gen === generation) chargerViewer(tentative + 1); }, 1500);
+        return;
+      }
       $charge.innerHTML = "<span>⚠️ Impossible de charger la maquette 3D. Vérifiez votre connexion internet puis rechargez la page.</span>";
     }
   });
