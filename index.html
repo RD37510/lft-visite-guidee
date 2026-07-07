@@ -6,35 +6,37 @@
 <title>La French Touch — Visite guidée 3D</title>
 <style>
   :root {
-    --charbon: #0F1419; --panneau: #161d24; --carte: #1b232b;
-    --orange: #FF5A00; --gris: #E6E6E6;
+    --charbon: #0F1419; --carte: #1b232b; --gris: #E6E6E6;
+    --accent: #FF5A00;   /* recolore selon le branding choisi */
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { height: 100%; font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; background: var(--charbon); color: #fff; }
   .layout { display: flex; flex-direction: column; height: 100%; }
 
+  /* ------- en-tete COMPACT (la 3D prend le reste) ------- */
   header {
-    display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
-    padding: 10px 18px; background: var(--charbon); border-bottom: 2px solid var(--orange);
+    display: flex; align-items: center; gap: 14px;
+    padding: 5px 14px; background: var(--charbon);
+    border-bottom: 2px solid var(--accent); transition: border-color .3s;
   }
-  header h1 { font-size: 15px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
-  header h1 span { color: var(--orange); }
-
-  .brandings { display: flex; gap: 12px; margin-left: auto; align-items: stretch; }
+  header h1 { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+  header h1 span { color: var(--accent); transition: color .3s; }
+  .brandings { display: flex; gap: 8px; margin-left: auto; }
   .logo-btn {
-    background: var(--carte); border: 2px solid transparent; border-radius: 10px;
-    padding: 6px 14px; cursor: pointer; display: flex; flex-direction: column;
-    align-items: center; gap: 3px; transition: border-color .2s, transform .1s;
+    background: var(--carte); border: 2px solid transparent; border-radius: 8px;
+    padding: 3px 10px; cursor: pointer; display: flex; flex-direction: column;
+    align-items: center; gap: 2px; transition: border-color .2s, transform .1s;
   }
   .logo-btn:active { transform: scale(.97); }
-  .logo-btn img { height: 52px; width: auto; max-width: 120px; object-fit: contain;
+  .logo-btn img { height: 34px; width: auto; max-width: 90px; object-fit: contain;
     filter: grayscale(1) brightness(.75); opacity: .5; transition: filter .25s, opacity .25s; }
-  .logo-btn .lib { font-size: 10px; letter-spacing: .5px; color: var(--gris); opacity: .5; text-transform: uppercase; }
-  .logo-btn.actif { border-color: var(--accent, var(--orange)); }
+  .logo-btn .lib { font-size: 9px; letter-spacing: .5px; color: var(--gris); opacity: .5; text-transform: uppercase; }
+  .logo-btn.actif { border-color: var(--laccent, var(--accent)); }
   .logo-btn.actif img { filter: none; opacity: 1; }
-  .logo-btn.actif .lib { opacity: 1; color: var(--accent, var(--orange)); font-weight: 700; }
+  .logo-btn.actif .lib { opacity: 1; color: var(--laccent, var(--accent)); font-weight: 700; }
 
-  .viewer { flex: 1; position: relative; background: #000; min-height: 240px; }
+  /* ------- viewer PLEIN ECRAN (le panneau flotte par-dessus) ------- */
+  .viewer { flex: 1; position: relative; background: #000; }
   .viewer iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
   #chargement {
     position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px;
@@ -45,37 +47,43 @@
   .brasier { font-size: 42px; animation: pulse 1.2s infinite alternate; }
   @keyframes pulse { from { transform: scale(1); opacity: .7; } to { transform: scale(1.15); opacity: 1; } }
 
+  /* ------- panneau d'etape : bandeau flottant compact ------- */
   .panneau {
-    background: var(--panneau); border-top: 2px solid var(--orange);
-    padding: 12px 18px 16px; display: flex; flex-direction: column; gap: 8px;
+    position: absolute; left: 14px; bottom: 14px; z-index: 6;
+    max-width: min(600px, calc(100% - 28px));
+    background: rgba(15, 20, 25, .90); backdrop-filter: blur(4px);
+    border: 1px solid var(--accent); border-radius: 12px;
+    padding: 10px 14px 12px; display: flex; flex-direction: column; gap: 6px;
+    transition: border-color .3s;
   }
-  .etape-ligne { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .etape-ligne { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .etape-num {
-    background: var(--orange); color: #fff; font-weight: 800; border-radius: 999px;
-    min-width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; font-size: 15px;
+    background: var(--accent); color: #fff; font-weight: 800; border-radius: 999px;
+    min-width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center;
+    font-size: 13px; transition: background .3s;
   }
-  .etape-titre { font-size: 17px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
-  .etape-desc { font-size: 13.5px; line-height: 1.5; color: var(--gris); max-width: 950px; }
-  .controles { display: flex; align-items: center; gap: 12px; margin-top: 2px; flex-wrap: wrap; }
+  .etape-titre { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+  .etape-desc { font-size: 12.5px; line-height: 1.45; color: var(--gris); }
+  .controles { display: flex; align-items: center; gap: 10px; margin-top: 2px; flex-wrap: wrap; }
   button {
-    font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
-    border: 0; border-radius: 8px; padding: 9px 20px; transition: transform .1s, opacity .2s;
+    font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+    border: 0; border-radius: 8px; padding: 7px 16px; transition: transform .1s, opacity .2s, background .3s;
   }
   button:active { transform: scale(.97); }
-  #btn-suivant { background: var(--orange); color: #fff; }
+  #btn-suivant { background: var(--accent); color: #fff; }
   #btn-precedent { background: transparent; color: var(--gris); border: 1px solid #4a535c; }
   button:disabled { opacity: .35; cursor: default; }
-  .points { display: flex; gap: 8px; margin-left: auto; }
-  .point { width: 12px; height: 12px; border-radius: 50%; background: #3a4149; cursor: pointer; border: 0; padding: 0; transition: background .2s, transform .2s; }
-  .point.actif { background: var(--orange); transform: scale(1.3); }
+  .points { display: flex; gap: 6px; margin-left: auto; }
+  .point { width: 10px; height: 10px; border-radius: 50%; background: #3a4149; cursor: pointer; border: 0; padding: 0; transition: background .2s, transform .2s; }
+  .point.actif { background: var(--accent); transform: scale(1.3); }
 
   @media (max-width: 700px) {
-    header { gap: 10px; }
-    header h1 { font-size: 13px; }
+    header { flex-wrap: wrap; gap: 8px; }
     .brandings { margin-left: 0; width: 100%; justify-content: center; }
-    .logo-btn img { height: 40px; }
-    .etape-titre { font-size: 14px; }
-    .etape-desc { font-size: 12.5px; }
+    .logo-btn img { height: 30px; }
+    .panneau { left: 8px; right: 8px; bottom: 8px; max-width: none; }
+    .etape-titre { font-size: 13px; }
+    .etape-desc { font-size: 11.5px; }
   }
 </style>
 </head>
@@ -88,41 +96,39 @@
   <div class="viewer" id="viewer-box">
     <iframe id="api-frame" title="La French Touch — maquette 3D" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
     <div id="chargement"><span class="brasier">🔥</span><span id="chargement-txt">Chargement du restaurant 3D…</span></div>
-  </div>
-  <div class="panneau">
-    <div class="etape-ligne">
-      <span class="etape-num" id="etape-num">1</span>
-      <span class="etape-titre" id="etape-titre"></span>
-    </div>
-    <p class="etape-desc" id="etape-desc"></p>
-    <div class="controles">
-      <button id="btn-precedent">← Précédent</button>
-      <button id="btn-suivant">Suivant →</button>
-      <div class="points" id="points"></div>
+    <div class="panneau">
+      <div class="etape-ligne">
+        <span class="etape-num" id="etape-num">1</span>
+        <span class="etape-titre" id="etape-titre"></span>
+      </div>
+      <p class="etape-desc" id="etape-desc"></p>
+      <div class="controles">
+        <button id="btn-precedent">← Précédent</button>
+        <button id="btn-suivant">Suivant →</button>
+        <div class="points" id="points"></div>
+      </div>
     </div>
   </div>
 </div>
 
 <script src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"></script>
 <script>
-// Visite guidée multi-brandings : 3 maquettes Sketchfab (même géométrie), caméra pilotée.
-// Coordonnées = espace glTF du modèle (x, hauteur, -profondeur Blender).
+// Visite guidée multi-brandings — 3 maquettes Sketchfab (même géométrie).
+// ⚠️ ESPACE CAMERA du viewer = repère BLENDER du modèle, z VERTICAL (mesuré par sonde CDP
+// 2026-07-06) : coordonnées ci-dessous = coords Blender verbatim, validées au rendu.
 var BRANDINGS = [
   { id: "br1", lib: "Branding 1", uid: "3c35bf5e5b2d495a9dba0edcc133c53d", logo: "logo-br1.png", accent: "#E63946" },
   { id: "br2", lib: "Branding 2", uid: "ed5c28783ebc4c8c83ddba33c388a8c5", logo: "logo-br2.png", accent: "#D78639" },
   { id: "br3", lib: "Branding 3", uid: "2d3d86e7186049ba81cd302a6653df22", logo: "logo-br3.png", accent: "#FF5A00" }
 ];
 
-// L'espace camera du viewer Sketchfab = repere D'ORIGINE du modele (z VERTICAL, mesure
-// par sonde CDP 2026-07-06 : cible par defaut = centre bbox en coords Blender). Coordonnees
-// des etapes = coords Blender verbatim ; calibration = filet si Sketchfab change de convention.
-var CENTRE_MODELE = [5.6, 2.54, 1.5];
+var CENTRE_MODELE = [5.6, 2.54, 1.5];   // centre bbox (calibration filet)
 var offsetViewer = [0, 0, 0];
 
 var ETAPES = [
   { titre: "Bienvenue devant La French Touch",
     pos: [5.6, -7.0, 1.6], cible: [5.6, 2.0, 1.3],
-    desc: { generique: "Voici la façade du futur restaurant : baie vitrée toute largeur et tables en terrasse. Suivez la visite avec le bouton « Suivant », ou explorez librement à la souris. Vous pouvez changer de branding à tout moment avec les logos en haut de page." } },
+    desc: { generique: "Voici la façade du futur restaurant : baie vitrée toute largeur et tables en terrasse. Suivez la visite avec « Suivant », ou explorez librement à la souris. Changez de branding à tout moment avec les logos en haut." } },
   { titre: "L'entrée",
     pos: [10.0, -2.4, 1.6], cible: [9.2, 2.5, 1.1],
     desc: { generique: "On entre par la porte vitrée côté droit, accueilli par le paillasson au logo. La ligne de banquettes longe la vitrine jusqu'à l'entrée." } },
@@ -147,6 +153,12 @@ var ETAPES = [
             br1: "Le mur du fond façon street-art : néons « DU FEU. DU GOÛT. », palmiers dorés et grand logo — l'énergie franco-latine.",
             br2: "Le mur du fond premium : noyer et ardoise, logo rétro-éclairé, « LE GOÛT DE LA BRAISE » et frise laiton.",
             br3: "Le mur en briques rouges : logo du coq rétro-éclairé, slogan néon « LE PLAISIR BIEN BRAISÉ » et hashtag #LaFrenchTouch." } },
+  { titre: "La fresque murale",
+    pos: [7.4, 2.3, 1.6], cible: [11.05, 2.3, 1.5],
+    desc: { generique: "Le mur de droite accueille la grande fresque de marque.",
+            br1: "Le mur de droite porte la planche de marque : logo, typographies et couleurs de l'identité franco-latine.",
+            br2: "Le mur de droite : fresque logo et couverts sur noyer, encadrée des reliefs laiton — l'écrin premium.",
+            br3: "Le mur de droite : le coq en flammes plein mur, encadré des néons flamme et du panneau MENU." } },
   { titre: "À vous d'explorer !",
     pos: [9.2, 0.7, 1.95], cible: [4.8, 4.0, 1.15],
     desc: { generique: "Vue d'ensemble de la salle. Déplacez-vous librement : clic gauche maintenu pour tourner, molette pour zoomer, clic droit maintenu pour glisser. Et comparez les 3 brandings avec les logos en haut !" } }
@@ -154,8 +166,8 @@ var ETAPES = [
 
 var api = null;
 var etapeActive = 0;
-var brandingActif = 2;   // demarre sur Branding 3 (le plus recent)
-var generation = 0;      // invalide les callbacks d'un viewer remplace
+var brandingActif = 2;   // démarre sur Branding 3
+var generation = 0;      // invalide les callbacks d'un viewer remplacé
 
 var $num = document.getElementById("etape-num");
 var $titre = document.getElementById("etape-titre");
@@ -168,7 +180,7 @@ var $charge = document.getElementById("chargement");
 
 BRANDINGS.forEach(function (b, i) {
   var btn = document.createElement("button");
-  btn.className = "logo-btn"; btn.style.setProperty("--accent", b.accent);
+  btn.className = "logo-btn"; btn.style.setProperty("--laccent", b.accent);
   btn.innerHTML = '<img src="' + b.logo + '" alt="' + b.lib + '"><span class="lib">' + b.lib + "</span>";
   btn.addEventListener("click", function () { choisirBranding(i); });
   $brandings.appendChild(btn);
@@ -184,6 +196,7 @@ ETAPES.forEach(function (_, i) {
 function majPanneau() {
   var e = ETAPES[etapeActive];
   var b = BRANDINGS[brandingActif];
+  document.documentElement.style.setProperty("--accent", b.accent);  // le SITE prend la couleur du branding
   $num.textContent = etapeActive + 1;
   $titre.textContent = e.titre;
   $desc.textContent = e.desc[b.id] || e.desc.generique;
@@ -227,7 +240,6 @@ function chargerViewer() {
   var b = BRANDINGS[brandingActif];
   $charge.classList.remove("cache");
   document.getElementById("chargement-txt").textContent = "Chargement — " + b.lib + "…";
-  // iframe neuve a chaque switch (le client Sketchfab ne se re-init pas proprement sinon)
   var vieux = document.getElementById("api-frame");
   var neuf = document.createElement("iframe");
   neuf.id = "api-frame"; neuf.title = "La French Touch — maquette 3D";
@@ -245,12 +257,10 @@ function chargerViewer() {
       a.addEventListener("viewerready", function () {
         if (gen !== generation) return;
         api = a;
-        // CALIBRATION : la camera par defaut de Sketchfab vise le centre du modele
-        // dans SON espace -> offset = cible_defaut - centre connu du glb.
         a.getCameraLookAt(function (err, cam) {
+          if (gen !== generation) return;
           if (!err && cam && cam.target) {
             var o = [cam.target[0] - CENTRE_MODELE[0], cam.target[1] - CENTRE_MODELE[1], cam.target[2] - CENTRE_MODELE[2]];
-            // garde-fou : un offset aberrant (> 100 m) = on n'y touche pas
             if (Math.abs(o[0]) < 100 && Math.abs(o[1]) < 100 && Math.abs(o[2]) < 100) offsetViewer = o;
           }
           $charge.classList.add("cache");
