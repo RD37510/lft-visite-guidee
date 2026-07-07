@@ -612,6 +612,8 @@ function chargerViewer() {
   api = null;
   var b = BRANDINGS[brandingActif];
   $charge.classList.remove("cache");
+  /* un échec précédent a pu remplacer le contenu du bloc : on le reconstruit */
+  $charge.innerHTML = '<span class="brasier">🔥</span><span id="chargement-txt"></span>';
   $("chargement-txt").textContent = "Chargement — " + b.lib + "…";
   var vieux = $("api-frame");
   var neuf = document.createElement("iframe");
