@@ -94,7 +94,7 @@
   .onglet.actif { background:var(--accent); border-color:var(--accent); color:#fff; }
   .onglet:not(.actif):hover { color:#fff; border-color:var(--accent); }
 </style>
-<style id="lft-transitions">.sur-titre,h1.page-titre em,.entete-lft,.entete-lft .menu-site a,.entete-lft .menu-site a.actif,.entete-lft .logo-btn,.entete-lft .logo-btn .lib,.onglet,.telecharger,.sommaire{transition:color .35s,background-color .35s,border-color .35s,filter .35s}</style></head>
+<style id="lft-transitions">.sur-titre,h1.page-titre em,.entete-lft,.entete-lft .menu-site a,.entete-lft .menu-site a.actif,.entete-lft .logo-btn,.entete-lft .logo-btn .lib,.onglet,.telecharger,.sommaire{transition:color .35s,background-color .35s,border-color .35s,filter .35s}</style><style id="lft-doc-colors">:root{--accent2:color-mix(in srgb, var(--accent) 55%, #F7B733)}.doc strong{color:var(--accent2);transition:color .35s}.doc-emoji{margin-right:.35em}.doc h1 .doc-emoji,.doc h2 .doc-emoji{-webkit-text-fill-color:initial}</style></head>
 <body>
 <header class="entete-lft">
   <div class="marque">
@@ -182,5 +182,5 @@ document.addEventListener('click', function (e) {
   if (cible) { e.preventDefault(); cible.scrollIntoView({ behavior: 'smooth' }); }
 });
 </script>
-</body>
+<script id="lft-doc-emoji">(function(){var map=[[/DESCRIPTION/,'📝'],[/DOCUMENTAIRE|PRESSE|SOURCE/,'📚'],[/CONCURREN/,'⚔️'],[/STRATEG/,'🎯'],[/PESTEL|MACRO|ENVIRONNEMENT/,'🌍'],[/SWOT/,'🧭'],[/ENQUETE|SONDAGE|TERRAIN/,'📋'],[/FINANCEMENT|BUDGET|INVESTISS|RENTAB/,'💰'],[/CHIFFRE|PREVISION|VENTE| CA/,'📈'],[/SOCIETE|JURIDIQUE|STATUT|PACTE|GERANT/,'🏛️'],[/CLIENT|CIBLE|PERSONA/,'🧑'],[/PRODUIT|OFFRE|MENU|CONCEPT|IDENTIT/,'🍗'],[/LOCAL|EMPLACEMENT|ZONE|CHALAND|MARCHE/,'📊'],[/RISQUE|MENACE|FAIBLESS/,'⚠️'],[/FORCE|ATOUT|OPPORTUN/,'💪'],[/ACTION|COMMERCIAL|MARKETING/,'🚀'],[/VISION|MISSION/,'✨']];function norm(s){return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();}Array.prototype.forEach.call(document.querySelectorAll('.doc h1, .doc h2'),function(h){if(h.querySelector('.doc-emoji'))return;var t=norm(h.textContent),e='🔸',i;for(i=0;i<map.length;i++){if(map[i][0].test(t)){e=map[i][1];break;}}var sp=document.createElement('span');sp.className='doc-emoji';sp.textContent=e+' ';h.insertBefore(sp,h.firstChild);});})();</script></body>
 </html>
