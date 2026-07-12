@@ -51,9 +51,11 @@
   }
 
   main { max-width:1060px; margin:0 auto; padding:130px 5vw 80px; }
-  .sur-titre { color:var(--accent); font-weight:800; letter-spacing:3px; text-transform:uppercase; font-size:12px; margin-bottom:10px; }
+  .sur-titre { color:var(--accent); font-weight:800; letter-spacing:3px; text-transform:uppercase; font-size:12px; margin-bottom:10px; transition:color .35s; }
   h1.page-titre { font-size:clamp(30px,5vw,52px); font-weight:900; text-transform:uppercase; letter-spacing:1px; line-height:1.1; }
-  h1.page-titre em { color:var(--accent); font-style:normal; }
+  h1.page-titre em { color:var(--accent); font-style:normal; transition:color .35s; }
+  .entete-lft, .entete-lft .menu-site a, .entete-lft .logo-btn, .entete-lft .logo-btn .lib,
+  .onglet, .telecharger, .sommaire, .sc-tuto-btn, .pc-add, .sc-tab, .src-tab, .pc-eur, .sc-eur { transition:color .35s, background-color .35s, border-color .35s, filter .35s; }
   .intro { color:var(--gris2); margin-top:14px; max-width:760px; line-height:1.7; font-size:15px; }
 
   .doc { line-height:1.75; font-size:15px; color:var(--gris); }
@@ -679,14 +681,27 @@ Array.prototype.forEach.call(document.querySelectorAll('[data-reveal]'), functio
 
 (function () {
   var accents = { br1: '#E63946', br2: '#D78639', br3: '#FF5A00' };
-  var br = localStorage.getItem('lft-branding');
-  if (!accents[br]) br = 'br1';
-  document.documentElement.style.setProperty('--lft-accent', accents[br]);
-  document.documentElement.style.setProperty('--accent', accents[br]);
-  var logo = document.getElementById('lft-logo');
-  if (logo) logo.src = 'logo-' + br + '.png';
+  function appliquer(br) {
+    if (!accents[br]) br = 'br1';
+    document.documentElement.style.setProperty('--lft-accent', accents[br]);
+    document.documentElement.style.setProperty('--accent', accents[br]);
+    var logo = document.getElementById('lft-logo');
+    if (logo) logo.src = 'logo-' + br + '.png';
+    Array.prototype.forEach.call(document.querySelectorAll('.entete-lft .logo-btn'), function (b) {
+      b.classList.toggle('actif', b.getAttribute('data-br') === br);
+    });
+  }
+  var cur = localStorage.getItem('lft-branding');
+  if (!accents[cur]) cur = 'br1';
+  appliquer(cur);
   Array.prototype.forEach.call(document.querySelectorAll('.entete-lft .logo-btn'), function (b) {
-    b.classList.toggle('actif', b.getAttribute('data-br') === br);
+    b.addEventListener('click', function (e) {
+      var br = b.getAttribute('data-br');
+      if (!accents[br]) return;
+      e.preventDefault();
+      try { localStorage.setItem('lft-branding', br); } catch (err) {}
+      appliquer(br);
+    });
   });
 })();
 /* le contenu commence sous le header, quelle que soit sa hauteur */

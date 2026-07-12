@@ -107,7 +107,7 @@
   .doc-carte[open] .dc-ouvrir { transform:rotate(90deg); color:var(--accent); }
   .dc-contenu { border-top:1px solid var(--ligne); padding-top:8px; }
 </style>
-</head>
+<style id="lft-transitions">.sur-titre,h1.page-titre em,.entete-lft,.entete-lft .menu-site a,.entete-lft .menu-site a.actif,.entete-lft .logo-btn,.entete-lft .logo-btn .lib,.onglet,.telecharger,.sommaire{transition:color .35s,background-color .35s,border-color .35s,filter .35s}</style></head>
 <body>
 <header class="entete-lft">
   <div class="marque">
@@ -199,14 +199,27 @@ Array.prototype.forEach.call(document.querySelectorAll('[data-reveal]'), functio
 
 (function () {
   var accents = { br1: '#E63946', br2: '#D78639', br3: '#FF5A00' };
-  var br = localStorage.getItem('lft-branding');
-  if (!accents[br]) br = 'br1';
-  document.documentElement.style.setProperty('--lft-accent', accents[br]);
-  document.documentElement.style.setProperty('--accent', accents[br]);
-  var logo = document.getElementById('lft-logo');
-  if (logo) logo.src = 'logo-' + br + '.png';
+  function appliquer(br) {
+    if (!accents[br]) br = 'br1';
+    document.documentElement.style.setProperty('--lft-accent', accents[br]);
+    document.documentElement.style.setProperty('--accent', accents[br]);
+    var logo = document.getElementById('lft-logo');
+    if (logo) logo.src = 'logo-' + br + '.png';
+    Array.prototype.forEach.call(document.querySelectorAll('.entete-lft .logo-btn'), function (b) {
+      b.classList.toggle('actif', b.getAttribute('data-br') === br);
+    });
+  }
+  var cur = localStorage.getItem('lft-branding');
+  if (!accents[cur]) cur = 'br1';
+  appliquer(cur);
   Array.prototype.forEach.call(document.querySelectorAll('.entete-lft .logo-btn'), function (b) {
-    b.classList.toggle('actif', b.getAttribute('data-br') === br);
+    b.addEventListener('click', function (e) {
+      var br = b.getAttribute('data-br');
+      if (!accents[br]) return;
+      e.preventDefault();
+      try { localStorage.setItem('lft-branding', br); } catch (err) {}
+      appliquer(br);
+    });
   });
 })();
 /* le contenu commence sous le header, quelle que soit sa hauteur */

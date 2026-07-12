@@ -6,6 +6,11 @@
 <title>La French Touch — Le projet</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://static.sketchfab.com" crossorigin>
+<link rel="preconnect" href="https://sketchfab.com" crossorigin>
+<link rel="dns-prefetch" href="https://media.sketchfab.com">
+<link rel="dns-prefetch" href="https://ssl.sketchfab.com">
+<link rel="preload" as="script" href="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -640,7 +645,7 @@ function chargerViewer(tentative) {
 
   var client = new Sketchfab("1.12.1", neuf);
   client.init(b.uid, {
-    autostart: 1, preload: 1,
+    autostart: 1, preload: 1, dnt: 1,
     ui_infos: 0, ui_controls: 0, ui_watermark: 0, ui_help: 0, ui_settings: 0,
     ui_inspector: 0, ui_vr: 0, ui_ar: 0, ui_annotations: 0, ui_fullscreen: 1,
     success: function (a) {
