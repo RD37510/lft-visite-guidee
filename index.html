@@ -6,11 +6,9 @@
 <title>La French Touch · Le projet</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://static.sketchfab.com" crossorigin>
-<link rel="preconnect" href="https://sketchfab.com" crossorigin>
-<link rel="dns-prefetch" href="https://media.sketchfab.com">
-<link rel="dns-prefetch" href="https://ssl.sketchfab.com">
-<link rel="preload" as="script" href="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js">
+<link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -84,7 +82,7 @@
   @keyframes braise { from { text-shadow: 0 0 8px rgba(255,90,0,.0); } to { text-shadow: 0 0 22px color-mix(in srgb, var(--accent) 65%, transparent); } }
   .slogan-barre .tagline { font-size: 12px; color: var(--gris2); letter-spacing: 3px; text-transform: uppercase; margin-top: 2px; }
   .viewer { flex: 1; position: relative; background: #000; }
-  .viewer iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .viewer iframe, .viewer model-viewer { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; --poster-color: transparent; }
   #chargement {
     position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px;
     align-items: center; justify-content: center; background: var(--charbon); z-index: 5;
@@ -272,7 +270,9 @@
       <div class="tagline" id="tagline">Poulet braisé · La French Touch</div>
     </div>
     <div class="viewer">
-      <iframe id="api-frame" title="La French Touch · maquette 3D" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
+      <model-viewer id="mv3d" title="La French Touch · maquette 3D" camera-controls interaction-prompt="none"
+        exposure="1.05" shadow-intensity="0.9" environment-image="neutral"
+        min-camera-orbit="auto auto 3m" max-camera-orbit="auto auto 32m" min-field-of-view="18deg"></model-viewer>
       <div id="chargement"><span class="brasier">🔥</span><span id="chargement-txt">Chargement du restaurant 3D…</span></div>
       <div class="panneau">
         <div class="etape-ligne">
@@ -381,7 +381,6 @@
 <button id="btn-3d">↑ Visite 3D</button>
 <dialog id="lightbox"><img id="lightbox-img" src="" alt=""><button id="lightbox-fermer" title="Fermer">✕</button></dialog>
 
-<script src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"></script>
 <script>
 /* =====================================================================
    La French Touch · site de présentation multi-brandings.
@@ -390,7 +389,7 @@
    ===================================================================== */
 
 var BRANDINGS = [
-  { id: "br1", lib: "Branding 1", uid: "3c35bf5e5b2d495a9dba0edcc133c53d", logo: "logo-br1.png", accent: "#E63946",
+  { id: "br1", lib: "Branding 1", glb: "https://res.cloudinary.com/dd7vwenio/raw/upload/lft-maquette/BR1.glb", logo: "logo-br1.png", accent: "#E63946",
     slogan: "DU FEU. DU GOÛT.", tagline: "Franco-latin · Pollo a la brasa",
     motscles: ["Solaire", "Convivial", "Street-art"],
     concept: [
@@ -412,7 +411,7 @@ var BRANDINGS = [
     pubTitre: "La campagne <em>Menu Enfant</em>",
     pubTexte: "Pour ce branding familial et convivial, la formule mise en avant est le MENU ENFANT : portion de poulet braisé adaptée aux petits, cornet de frites, dessert au chocolat et jus d'orange. Quatre déclinaisons publicitaires au format vertical, prêtes pour les réseaux sociaux et les stories." },
 
-  { id: "br2", lib: "Branding 2", uid: "ed5c28783ebc4c8c83ddba33c388a8c5", logo: "logo-br2.png", accent: "#D78639",
+  { id: "br2", lib: "Branding 2", glb: "https://res.cloudinary.com/dd7vwenio/raw/upload/lft-maquette/BR2.glb", logo: "logo-br2.png", accent: "#D78639",
     slogan: "LE GOÛT DE LA BRAISE", tagline: "Premium · Cuisson au feu de bois",
     motscles: ["Premium", "Artisanal", "Chaleureux"],
     concept: [
@@ -434,7 +433,7 @@ var BRANDINGS = [
     pubTitre: "La campagne <em>Menu Maxi</em>",
     pubTexte: "Pour ce branding généreux et premium, la formule mise en avant est le MENU MAXI : un demi-poulet braisé, frites et patatas bravas, deux sauces maison. Quatre déclinaisons publicitaires verticales, calibrées pour les réseaux sociaux." },
 
-  { id: "br3", lib: "Branding 3", uid: "2d3d86e7186049ba81cd302a6653df22", logo: "logo-br3.png", accent: "#FF5A00",
+  { id: "br3", lib: "Branding 3", glb: "https://res.cloudinary.com/dd7vwenio/raw/upload/lft-maquette/BR3.glb", logo: "logo-br3.png", accent: "#FF5A00",
     slogan: "LE PLAISIR BIEN BRAISÉ", tagline: "Feu & charbon · Braised chicken",
     motscles: ["Feu", "Brut", "Urbain"],
     concept: [
@@ -613,69 +612,50 @@ function majPanneau() {
 }
 
 /* ---------- visite 3D ---------- */
-function decale(p) { return [p[0] + offsetViewer[0], p[1] + offsetViewer[1], p[2] + offsetViewer[2]]; }
+/* conversion repere Blender (Z vertical) -> orbite model-viewer (Y vertical) */
+function blenderVersOrbite(eyeB, tgtB) {
+  var e = [eyeB[0], eyeB[2], -eyeB[1]], t = [tgtB[0], tgtB[2], -tgtB[1]];
+  var dx = e[0] - t[0], dy = e[1] - t[1], dz = e[2] - t[2];
+  var r = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
+  var phi = Math.acos(Math.max(-1, Math.min(1, dy / r)));
+  var theta = Math.atan2(dx, dz);
+  return { orbit: theta.toFixed(4) + "rad " + phi.toFixed(4) + "rad " + r.toFixed(2) + "m",
+           target: t[0].toFixed(3) + "m " + t[1].toFixed(3) + "m " + t[2].toFixed(3) + "m" };
+}
 
 function allerEtape(i, duree) {
   etapeActive = (i + ETAPES.length) % ETAPES.length;
   majPanneau();
-  if (api) {
+  var mv = $("mv3d");
+  if (mv) {
     var e = ETAPES[etapeActive];
-    api.setCameraLookAt(decale(e.pos), decale(e.cible), duree === undefined ? 2.2 : duree);
+    var c = blenderVersOrbite(e.pos, e.cible);
+    mv.cameraTarget = c.target;
+    mv.cameraOrbit = c.orbit;
   }
 }
 
 $prec.addEventListener("click", function () { allerEtape(etapeActive - 1); });
 $suiv.addEventListener("click", function () { allerEtape(etapeActive + 1); });
 
-function chargerViewer(tentative) {
-  tentative = tentative || 0;
-  generation += 1;
-  var gen = generation;
-  api = null;
+function chargerViewer() {
   var b = BRANDINGS[brandingActif];
+  var mv = $("mv3d");
   $charge.classList.remove("cache");
-  /* un échec précédent a pu remplacer le contenu du bloc : on le reconstruit */
   $charge.innerHTML = '<span class="brasier">🔥</span><span id="chargement-txt"></span>';
   $("chargement-txt").textContent = "Chargement · " + b.lib + "…";
-  var vieux = $("api-frame");
-  var neuf = document.createElement("iframe");
-  neuf.id = "api-frame"; neuf.title = "La French Touch · maquette 3D";
-  neuf.setAttribute("allow", "autoplay; fullscreen; xr-spatial-tracking");
-  vieux.parentNode.replaceChild(neuf, vieux);
-
-  var client = new Sketchfab("1.12.1", neuf);
-  client.init(b.uid, {
-    autostart: 1, preload: 1, dnt: 1,
-    ui_infos: 0, ui_controls: 0, ui_watermark: 0, ui_help: 0, ui_settings: 0,
-    ui_inspector: 0, ui_vr: 0, ui_ar: 0, ui_annotations: 0, ui_fullscreen: 1,
-    success: function (a) {
-      if (gen !== generation) return;
-      a.start();
-      a.addEventListener("viewerready", function () {
-        if (gen !== generation) return;
-        api = a;
-        a.getCameraLookAt(function (err, cam) {
-          if (gen !== generation) return;
-          if (!err && cam && cam.target) {
-            var o = [cam.target[0] - CENTRE_MODELE[0], cam.target[1] - CENTRE_MODELE[1], cam.target[2] - CENTRE_MODELE[2]];
-            if (Math.abs(o[0]) < 100 && Math.abs(o[1]) < 100 && Math.abs(o[2]) < 100) offsetViewer = o;
-          }
-          $charge.classList.add("cache");
-          allerEtape(etapeActive, 0.1);
-        });
-      });
-    },
-    error: function () {
-      if (gen !== generation) return;
-      /* le GPU peut refuser un 2e contexte WebGL juste apres la destruction de
-         l'ancienne iframe : on retente avant de declarer l'echec */
-      if (tentative < 2) {
-        setTimeout(function () { if (gen === generation) chargerViewer(tentative + 1); }, 1500);
-        return;
-      }
-      $charge.innerHTML = "<span>⚠️ Impossible de charger la maquette 3D. Vérifiez votre connexion internet puis rechargez la page.</span>";
-    }
-  });
+  var onLoad = function () {
+    mv.removeEventListener("load", onLoad);
+    $charge.classList.add("cache");
+    allerEtape(etapeActive, 0.1);
+  };
+  var onErr = function () {
+    mv.removeEventListener("error", onErr);
+    $charge.innerHTML = "<span>⚠️ Impossible de charger la maquette 3D. Vérifiez votre connexion internet puis rechargez la page.</span>";
+  };
+  mv.addEventListener("load", onLoad);
+  mv.addEventListener("error", onErr);
+  mv.src = b.glb;
 }
 
 /* ---------- bascule de branding avec volet ---------- */
